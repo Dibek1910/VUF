@@ -20,7 +20,7 @@ class AuthProvider with ChangeNotifier {
   // Initialize auth state
   Future<void> initAuth() async {
     _isLoading = true;
-    notifyListeners();
+    // Removed the notifyListeners() call here to avoid calling during build phase
 
     try {
       final isLoggedIn = await _storageService.isLoggedIn();
@@ -41,7 +41,10 @@ class AuthProvider with ChangeNotifier {
       _user = null;
     } finally {
       _isLoading = false;
-      notifyListeners();
+      // Use microtask to ensure notifyListeners() is called after the build phase
+      Future.microtask(() {
+        notifyListeners();
+      });
     }
   }
 

@@ -20,7 +20,10 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _initializeApp();
+    // Use microtask to ensure initialization happens after build is complete
+    Future.microtask(() {
+      _initializeApp();
+    });
   }
 
   Future<void> _initializeApp() async {
