@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vishv_umiyadham_foundation/providers/auth_provider.dart';
 import 'package:vishv_umiyadham_foundation/screens/auth/onboarding_screen.dart';
-import 'package:vishv_umiyadham_foundation/screens/dashboard/admin_dashboard.dart';
-import 'package:vishv_umiyadham_foundation/screens/dashboard/captain_dashboard.dart';
-import 'package:vishv_umiyadham_foundation/screens/dashboard/player_dashboard.dart';
+import 'package:vishv_umiyadham_foundation/screens/dashboard/admin/admin_dashboard.dart';
+import 'package:vishv_umiyadham_foundation/screens/dashboard/captain/captain_dashboard.dart';
+import 'package:vishv_umiyadham_foundation/screens/dashboard/player/player_dashboard.dart';
 import 'package:vishv_umiyadham_foundation/utils/constants.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:vishv_umiyadham_foundation/utils/app_theme.dart';
@@ -20,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    // Use microtask to ensure initialization happens after build is complete
+
     Future.microtask(() {
       _initializeApp();
     });
@@ -30,7 +30,6 @@ class _SplashScreenState extends State<SplashScreen> {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     await authProvider.initAuth();
 
-    // Navigate based on authentication status
     if (!mounted) return;
 
     if (authProvider.isAuthenticated) {
@@ -74,7 +73,6 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Logo or app name
             const Text(
               'Vishv Umiyadham',
               style: TextStyle(
@@ -92,7 +90,6 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             ),
             const SizedBox(height: 30),
-            // Loading indicator
             const SpinKitDoubleBounce(
               color: AppTheme.primaryColor,
               size: 50.0,

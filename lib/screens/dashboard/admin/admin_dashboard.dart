@@ -98,7 +98,6 @@ class AdminHomeTab extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Admin info card
           Card(
             elevation: 2,
             shape: RoundedRectangleBorder(
@@ -172,8 +171,6 @@ class AdminHomeTab extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 24),
-
-          // Stats overview
           const Text(
             'Overview',
             style: TextStyle(
@@ -182,8 +179,6 @@ class AdminHomeTab extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-
-          // Stats cards
           Row(
             children: [
               Expanded(
@@ -232,8 +227,6 @@ class AdminHomeTab extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 24),
-
-          // Recent activity
           const Text(
             'Recent Activity',
             style: TextStyle(
@@ -242,8 +235,6 @@ class AdminHomeTab extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-
-          // Activity list
           _buildActivityItem(
             'New captain registration',
             'John Doe registered as a captain',
@@ -445,9 +436,7 @@ class AdminTeamsTab extends StatelessWidget {
                       icon: const Icon(
                         Icons.more_vert,
                       ),
-                      onPressed: () {
-                        // Show team options
-                      },
+                      onPressed: () {},
                     ),
                   ),
                 );
@@ -481,9 +470,7 @@ class AdminMatchesTab extends StatelessWidget {
                 ),
               ),
               ElevatedButton.icon(
-                onPressed: () {
-                  // Create new match
-                },
+                onPressed: () {},
                 icon: const Icon(Icons.add),
                 label: const Text('New Match'),
                 style: ElevatedButton.styleFrom(
@@ -681,9 +668,7 @@ class AdminMatchesTab extends StatelessWidget {
                   ),
                 if (status == 'Live')
                   ElevatedButton.icon(
-                    onPressed: () {
-                      // Update score
-                    },
+                    onPressed: () {},
                     icon: const Icon(Icons.edit),
                     label: const Text('Update Score'),
                     style: ElevatedButton.styleFrom(
@@ -828,9 +813,7 @@ class AdminCaptainsTab extends StatelessWidget {
                 ),
                 if (!isActive)
                   ElevatedButton(
-                    onPressed: () {
-                      // Approve captain
-                    },
+                    onPressed: () {},
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 8),

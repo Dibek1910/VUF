@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vishv_umiyadham_foundation/providers/auth_provider.dart';
 import 'package:vishv_umiyadham_foundation/screens/auth/login_screen.dart';
-import 'package:vishv_umiyadham_foundation/screens/dashboard/admin_dashboard.dart';
-import 'package:vishv_umiyadham_foundation/screens/dashboard/captain_dashboard.dart';
-import 'package:vishv_umiyadham_foundation/screens/dashboard/player_dashboard.dart';
+import 'package:vishv_umiyadham_foundation/screens/dashboard/admin/admin_dashboard.dart';
+import 'package:vishv_umiyadham_foundation/screens/dashboard/captain/captain_dashboard.dart';
+import 'package:vishv_umiyadham_foundation/screens/dashboard/player/player_dashboard.dart';
 import 'package:vishv_umiyadham_foundation/utils/app_theme.dart';
 import 'package:vishv_umiyadham_foundation/widgets/custom_text_field.dart';
 
@@ -121,8 +121,6 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ),
                 const SizedBox(height: 30),
-
-                // Name field
                 CustomTextField(
                   controller: _nameController,
                   label: 'Full Name',
@@ -136,8 +134,6 @@ class _SignupScreenState extends State<SignupScreen> {
                   },
                 ),
                 const SizedBox(height: 20),
-
-                // Email field
                 CustomTextField(
                   controller: _emailController,
                   label: 'Email',
@@ -156,8 +152,6 @@ class _SignupScreenState extends State<SignupScreen> {
                   },
                 ),
                 const SizedBox(height: 20),
-
-                // Phone field
                 CustomTextField(
                   controller: _phoneController,
                   label: 'Phone Number',
@@ -175,8 +169,6 @@ class _SignupScreenState extends State<SignupScreen> {
                   },
                 ),
                 const SizedBox(height: 20),
-
-                // Role selection
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -217,8 +209,6 @@ class _SignupScreenState extends State<SignupScreen> {
                   ],
                 ),
                 const SizedBox(height: 20),
-
-                // Password field
                 CustomTextField(
                   controller: _passwordController,
                   label: 'Password',
@@ -248,8 +238,6 @@ class _SignupScreenState extends State<SignupScreen> {
                   },
                 ),
                 const SizedBox(height: 20),
-
-                // Confirm password field
                 CustomTextField(
                   controller: _confirmPasswordController,
                   label: 'Confirm Password',
@@ -279,8 +267,6 @@ class _SignupScreenState extends State<SignupScreen> {
                   },
                 ),
                 const SizedBox(height: 40),
-
-                // Register button
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
@@ -298,8 +284,6 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-
-                // Login link
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

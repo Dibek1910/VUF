@@ -62,8 +62,6 @@ class DashboardDrawer extends StatelessWidget {
               ],
             ),
           ),
-
-          // Dashboard
           ListTile(
             leading: const Icon(Icons.dashboard),
             title: const Text('Dashboard'),
@@ -71,8 +69,6 @@ class DashboardDrawer extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
-
-          // Role-specific menu items
           if (role == 'Admin') ...[
             ListTile(
               leading: const Icon(Icons.group),
@@ -140,10 +136,7 @@ class DashboardDrawer extends StatelessWidget {
               },
             ),
           ],
-
           const Divider(),
-
-          // Settings
           ListTile(
             leading: const Icon(Icons.settings),
             title: const Text('Settings'),
@@ -151,8 +144,6 @@ class DashboardDrawer extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
-
-          // Theme toggle
           ListTile(
             leading: Icon(
               themeProvider.themeMode == ThemeMode.dark
@@ -169,8 +160,6 @@ class DashboardDrawer extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
-
-          // Logout
           ListTile(
             leading: const Icon(Icons.logout),
             title: const Text('Logout'),

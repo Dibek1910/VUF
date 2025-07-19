@@ -5,28 +5,28 @@ import 'package:vishv_umiyadham_foundation/screens/auth/login_screen.dart';
 import 'package:vishv_umiyadham_foundation/utils/app_theme.dart';
 import 'package:vishv_umiyadham_foundation/widgets/dashboard_drawer.dart';
 
-class PlayerDashboard extends StatefulWidget {
-  const PlayerDashboard({super.key});
+class CaptainDashboard extends StatefulWidget {
+  const CaptainDashboard({super.key});
 
   @override
-  State<PlayerDashboard> createState() => _PlayerDashboardState();
+  State<CaptainDashboard> createState() => _CaptainDashboardState();
 }
 
-class _PlayerDashboardState extends State<PlayerDashboard> {
+class _CaptainDashboardState extends State<CaptainDashboard> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    const PlayerHomeTab(),
-    const PlayerTeamTab(),
-    const PlayerMatchesTab(),
-    const PlayerProfileTab(),
+    const CaptainHomeTab(),
+    const CaptainTeamTab(),
+    const CaptainMatchesTab(),
+    const CaptainSubscriptionTab(),
   ];
 
   final List<String> _titles = [
     'Dashboard',
     'My Team',
     'Matches',
-    'Profile',
+    'Subscription',
   ];
 
   @override
@@ -50,7 +50,7 @@ class _PlayerDashboardState extends State<PlayerDashboard> {
           ),
         ],
       ),
-      drawer: const DashboardDrawer(role: 'Player'),
+      drawer: const DashboardDrawer(role: 'Captain'),
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
@@ -76,8 +76,8 @@ class _PlayerDashboardState extends State<PlayerDashboard> {
             label: 'Matches',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
+            icon: Icon(Icons.card_membership),
+            label: 'Subscription',
           ),
         ],
       ),
@@ -85,8 +85,8 @@ class _PlayerDashboardState extends State<PlayerDashboard> {
   }
 }
 
-class PlayerHomeTab extends StatelessWidget {
-  const PlayerHomeTab({super.key});
+class CaptainHomeTab extends StatelessWidget {
+  const CaptainHomeTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +98,6 @@ class PlayerHomeTab extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Player info card
           Card(
             elevation: 2,
             shape: RoundedRectangleBorder(
@@ -115,7 +114,7 @@ class PlayerHomeTab extends StatelessWidget {
                         backgroundColor: AppTheme.primaryColor,
                         radius: 30,
                         child: Text(
-                          user?.name.substring(0, 1) ?? 'P',
+                          user?.name.substring(0, 1) ?? 'C',
                           style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
@@ -129,7 +128,7 @@ class PlayerHomeTab extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              user?.name ?? 'Player',
+                              user?.name ?? 'Captain',
                               style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
@@ -137,30 +136,54 @@ class PlayerHomeTab extends StatelessWidget {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              user?.email ?? 'player@example.com',
+                              user?.email ?? 'captain@example.com',
                               style: const TextStyle(
                                 fontSize: 14,
                                 color: AppTheme.textLightColor,
                               ),
                             ),
                             const SizedBox(height: 4),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 4,
-                              ),
-                              decoration: BoxDecoration(
-                                color: AppTheme.primaryColor.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: const Text(
-                                'Player',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: AppTheme.primaryColor,
-                                  fontWeight: FontWeight.bold,
+                            Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color:
+                                        AppTheme.primaryColor.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: const Text(
+                                    'Captain',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: AppTheme.primaryColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                const SizedBox(width: 8),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.green.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: const Text(
+                                    'Active',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.green,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -175,7 +198,7 @@ class PlayerHomeTab extends StatelessWidget {
                     children: [
                       _buildInfoItem(
                           'Unique ID', user?.uniqueId ?? 'abc123xyz'),
-                      _buildInfoItem('Team', 'Team Alpha'),
+                      _buildInfoItem('Subscription', 'Active till 15 May 2024'),
                     ],
                   ),
                 ],
@@ -183,18 +206,24 @@ class PlayerHomeTab extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 24),
-
-          // Team invitations
-          const Text(
-            'Team Invitations',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'My Team',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              TextButton.icon(
+                onPressed: () {},
+                icon: const Icon(Icons.arrow_forward),
+                label: const Text('View Details'),
+              ),
+            ],
           ),
           const SizedBox(height: 16),
-
-          // Invitation card
           Card(
             elevation: 2,
             shape: RoundedRectangleBorder(
@@ -205,34 +234,41 @@ class PlayerHomeTab extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Row(
+                  Row(
                     children: [
-                      CircleAvatar(
-                        backgroundColor: Colors.blue,
-                        radius: 20,
-                        child: Text(
-                          'T',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                      Container(
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'T',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24,
+                            ),
                           ),
                         ),
                       ),
-                      SizedBox(width: 12),
-                      Expanded(
+                      const SizedBox(width: 16),
+                      const Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Team Beta',
+                              'Team Alpha',
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             SizedBox(height: 4),
                             Text(
-                              'Captain: John Doe',
+                              '8 Players',
                               style: TextStyle(
                                 fontSize: 14,
                                 color: AppTheme.textLightColor,
@@ -244,41 +280,22 @@ class PlayerHomeTab extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  const Text(
-                    'You have been invited to join Team Beta. Do you want to accept this invitation?',
-                    style: TextStyle(
-                      fontSize: 14,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                  const Divider(),
+                  const SizedBox(height: 8),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      OutlinedButton(
-                        onPressed: () {
-                          // Reject invitation
-                        },
-                        style: OutlinedButton.styleFrom(
-                          side: const BorderSide(color: Colors.red),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 8),
-                        ),
-                        child: const Text(
-                          'Reject',
-                          style: TextStyle(color: Colors.red),
+                      Text(
+                        'Upcoming Match',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(width: 12),
-                      ElevatedButton(
-                        onPressed: () {
-                          // Accept invitation
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 8),
+                      Text(
+                        '15 May 2023, 3:00 PM',
+                        style: TextStyle(
+                          color: AppTheme.textLightColor,
                         ),
-                        child: const Text('Accept'),
                       ),
                     ],
                   ),
@@ -287,155 +304,40 @@ class PlayerHomeTab extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 24),
-
-          // Upcoming matches
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
-                'Upcoming Matches',
+                'Recent Matches',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               TextButton.icon(
-                onPressed: () {
-                  // Navigate to matches tab
-                },
+                onPressed: () {},
                 icon: const Icon(Icons.arrow_forward),
                 label: const Text('View All'),
               ),
             ],
           ),
           const SizedBox(height: 16),
-
-          // Match card
-          Card(
-            elevation: 2,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Match #1',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.blue.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: const Text(
-                          'Upcoming',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          children: [
-                            CircleAvatar(
-                              backgroundColor: Colors.blue,
-                              radius: 24,
-                              child: Text(
-                                'A',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 8),
-                            Text(
-                              'Team Alpha',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Text(
-                        'VS',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                          color: AppTheme.textLightColor,
-                        ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          children: [
-                            CircleAvatar(
-                              backgroundColor: Colors.red,
-                              radius: 24,
-                              child: Text(
-                                'B',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 8),
-                            Text(
-                              'Team Beta',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Date: 15 May 2023',
-                        style: TextStyle(
-                          color: AppTheme.textLightColor,
-                        ),
-                      ),
-                      Text(
-                        'Time: 3:00 PM',
-                        style: TextStyle(
-                          color: AppTheme.textLightColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+          _buildMatchCard(
+            'Team Alpha',
+            'Team Beta',
+            '52',
+            '48',
+            'Won',
+            '10 May 2023',
+          ),
+          const SizedBox(height: 12),
+          _buildMatchCard(
+            'Team Alpha',
+            'Team Gamma',
+            '45',
+            '50',
+            'Lost',
+            '5 May 2023',
           ),
         ],
       ),
@@ -464,10 +366,145 @@ class PlayerHomeTab extends StatelessWidget {
       ],
     );
   }
+
+  Widget _buildMatchCard(
+    String team1,
+    String team2,
+    String score1,
+    String score2,
+    String result,
+    String date,
+  ) {
+    final isWon = result == 'Won';
+
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  date,
+                  style: const TextStyle(
+                    color: AppTheme.textLightColor,
+                    fontSize: 12,
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: isWon
+                        ? Colors.green.withOpacity(0.1)
+                        : Colors.red.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    result,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: isWon ? Colors.green : Colors.red,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Column(
+                    children: [
+                      const CircleAvatar(
+                        backgroundColor: Colors.blue,
+                        radius: 20,
+                        child: Text(
+                          'A',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        team1,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        score1,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const Text(
+                  'VS',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: AppTheme.textLightColor,
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    children: [
+                      const CircleAvatar(
+                        backgroundColor: Colors.red,
+                        radius: 20,
+                        child: Text(
+                          'B',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        team2,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        score2,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
-class PlayerTeamTab extends StatelessWidget {
-  const PlayerTeamTab({super.key});
+class CaptainTeamTab extends StatelessWidget {
+  const CaptainTeamTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -476,7 +513,6 @@ class PlayerTeamTab extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Team info card
           Card(
             elevation: 2,
             shape: RoundedRectangleBorder(
@@ -521,7 +557,7 @@ class PlayerTeamTab extends StatelessWidget {
                             ),
                             SizedBox(height: 4),
                             Text(
-                              'Joined on 1 Jan 2023',
+                              'Created on 1 Jan 2023',
                               style: TextStyle(
                                 fontSize: 14,
                                 color: AppTheme.textLightColor,
@@ -530,53 +566,9 @@ class PlayerTeamTab extends StatelessWidget {
                           ],
                         ),
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  const Divider(),
-                  const SizedBox(height: 8),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Captain',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: AppTheme.textLightColor,
-                            ),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            'John Doe',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Total Players',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: AppTheme.textLightColor,
-                            ),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            '8',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
+                      IconButton(
+                        icon: const Icon(Icons.edit),
+                        onPressed: () {},
                       ),
                     ],
                   ),
@@ -585,24 +577,34 @@ class PlayerTeamTab extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 24),
-
-          // Team members
-          const Text(
-            'Team Members',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Players',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              ElevatedButton.icon(
+                onPressed: () {
+                  _showAddPlayerDialog(context);
+                },
+                icon: const Icon(Icons.add),
+                label: const Text('Add Player'),
+                style: ElevatedButton.styleFrom(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 16),
-
-          // Team members list
           Expanded(
             child: ListView.builder(
               itemCount: 8,
               itemBuilder: (context, index) {
-                final isCaptain = index == 0;
-
                 return Card(
                   margin: const EdgeInsets.only(bottom: 12),
                   shape: RoundedRectangleBorder(
@@ -611,11 +613,10 @@ class PlayerTeamTab extends StatelessWidget {
                   child: ListTile(
                     contentPadding: const EdgeInsets.all(16),
                     leading: CircleAvatar(
-                      backgroundColor: isCaptain
-                          ? AppTheme.primaryColor
-                          : Colors.primaries[index % Colors.primaries.length],
+                      backgroundColor:
+                          Colors.primaries[index % Colors.primaries.length],
                       child: Text(
-                        isCaptain ? 'C' : 'P${index}',
+                        'P${index + 1}',
                         style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -623,7 +624,7 @@ class PlayerTeamTab extends StatelessWidget {
                       ),
                     ),
                     title: Text(
-                      isCaptain ? 'John Doe (Captain)' : 'Player $index',
+                      'Player ${index + 1}',
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
@@ -632,11 +633,19 @@ class PlayerTeamTab extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 4),
-                        Text(
-                            'Email: ${isCaptain ? 'captain' : 'player$index'}@example.com'),
+                        Text('Email: player${index + 1}@example.com'),
                         const SizedBox(height: 4),
                         Text('Phone: +1234567890${index}'),
+                        const SizedBox(height: 4),
+                        Text('Unique ID: abc${index}xyz'),
                       ],
+                    ),
+                    trailing: IconButton(
+                      icon: const Icon(
+                        Icons.delete,
+                        color: Colors.red,
+                      ),
+                      onPressed: () {},
                     ),
                   ),
                 );
@@ -647,10 +656,63 @@ class PlayerTeamTab extends StatelessWidget {
       ),
     );
   }
+
+  void _showAddPlayerDialog(BuildContext context) {
+    final playerIdController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Add Player'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              'Enter the player\'s unique ID to add them to your team.',
+              style: TextStyle(
+                color: AppTheme.textLightColor,
+              ),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: playerIdController,
+              decoration: const InputDecoration(
+                labelText: 'Player Unique ID',
+                hintText: 'Enter player unique ID',
+                prefixIcon: Icon(Icons.person),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (playerIdController.text.isNotEmpty) {
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Player invitation sent successfully'),
+                    backgroundColor: Colors.green,
+                  ),
+                );
+              }
+            },
+            child: const Text('Add Player'),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
-class PlayerMatchesTab extends StatelessWidget {
-  const PlayerMatchesTab({super.key});
+class CaptainMatchesTab extends StatelessWidget {
+  const CaptainMatchesTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -861,78 +923,24 @@ class PlayerMatchesTab extends StatelessWidget {
   }
 }
 
-class PlayerProfileTab extends StatelessWidget {
-  const PlayerProfileTab({super.key});
+class CaptainSubscriptionTab extends StatelessWidget {
+  const CaptainSubscriptionTab({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context);
-    final user = authProvider.user;
-
-    return SingleChildScrollView(
+    return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Profile header
-          Center(
-            child: Column(
-              children: [
-                CircleAvatar(
-                  backgroundColor: AppTheme.primaryColor,
-                  radius: 50,
-                  child: Text(
-                    user?.name.substring(0, 1) ?? 'P',
-                    style: const TextStyle(
-                      fontSize: 36,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  user?.name ?? 'Player',
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppTheme.primaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: const Text(
-                    'Player',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: AppTheme.primaryColor,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 32),
-
-          // Profile details
           const Text(
-            'Profile Details',
+            'Subscription',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
           ),
           const SizedBox(height: 16),
-
-          // Profile details card
           Card(
             elevation: 2,
             shape: RoundedRectangleBorder(
@@ -941,46 +949,119 @@ class PlayerProfileTab extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildProfileItem(
-                    'Email',
-                    user?.email ?? 'player@example.com',
-                    Icons.email_outlined,
+                  const Row(
+                    children: [
+                      Icon(
+                        Icons.card_membership,
+                        color: AppTheme.primaryColor,
+                        size: 28,
+                      ),
+                      SizedBox(width: 12),
+                      Text(
+                        'Current Subscription',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
+                  const SizedBox(height: 16),
                   const Divider(),
-                  _buildProfileItem(
-                    'Phone',
-                    user?.phone ?? '+1234567890',
-                    Icons.phone_outlined,
-                  ),
-                  const Divider(),
-                  _buildProfileItem(
-                    'Unique ID',
-                    user?.uniqueId ?? 'abc123xyz',
-                    Icons.badge_outlined,
-                  ),
-                  const Divider(),
-                  _buildProfileItem(
-                    'Team',
-                    'Team Alpha',
-                    Icons.group_outlined,
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _buildSubscriptionInfo('Status', 'Active', Colors.green),
+                      _buildSubscriptionInfo(
+                          'Plan', 'Annual', AppTheme.primaryColor),
+                      _buildSubscriptionInfo(
+                          'Expires', '15 May 2024', Colors.orange),
+                    ],
                   ),
                 ],
               ),
             ),
           ),
           const SizedBox(height: 24),
-
-          // Edit profile button
+          const Text(
+            'Payment History',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Expanded(
+            child: ListView.builder(
+              itemCount: 3,
+              itemBuilder: (context, index) {
+                return Card(
+                  margin: const EdgeInsets.only(bottom: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.all(16),
+                    leading: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: AppTheme.primaryColor.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Icon(
+                        Icons.payment,
+                        color: AppTheme.primaryColor,
+                      ),
+                    ),
+                    title: Text(
+                      'Annual Subscription',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 4),
+                        Text('Date: ${15 - index} May 2023'),
+                        const SizedBox(height: 4),
+                        Text('Amount: ₹${1000 + (index * 100)}'),
+                      ],
+                    ),
+                    trailing: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.green.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Text(
+                        'Completed',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.green,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton.icon(
               onPressed: () {
-                // Edit profile
-                _showEditProfileDialog(context, user);
+                _showRenewSubscriptionDialog(context);
               },
-              icon: const Icon(Icons.edit),
-              label: const Text('Edit Profile'),
+              icon: const Icon(Icons.refresh),
+              label: const Text('Renew Subscription'),
             ),
           ),
         ],
@@ -988,72 +1069,50 @@ class PlayerProfileTab extends StatelessWidget {
     );
   }
 
-  Widget _buildProfileItem(String label, String value, IconData icon) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      child: Row(
-        children: [
-          Icon(
-            icon,
-            color: AppTheme.primaryColor,
-            size: 24,
+  Widget _buildSubscriptionInfo(String label, String value, Color valueColor) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 12,
+            color: AppTheme.textLightColor,
           ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  label,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: AppTheme.textLightColor,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  value,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          value,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: valueColor,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
-  void _showEditProfileDialog(BuildContext context, user) {
-    final nameController = TextEditingController(text: user?.name);
-    final phoneController = TextEditingController(text: user?.phone);
-
+  void _showRenewSubscriptionDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Edit Profile'),
+        title: const Text('Renew Subscription'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextField(
-              controller: nameController,
-              decoration: const InputDecoration(
-                labelText: 'Name',
-                hintText: 'Enter your name',
-                prefixIcon: Icon(Icons.person),
+            const Text(
+              'Your current subscription is valid until 15 May 2024. Do you want to renew it for another year?',
+              style: TextStyle(
+                color: AppTheme.textLightColor,
               ),
             ),
             const SizedBox(height: 16),
-            TextField(
-              controller: phoneController,
-              decoration: const InputDecoration(
-                labelText: 'Phone',
-                hintText: 'Enter your phone number',
-                prefixIcon: Icon(Icons.phone),
+            const Text(
+              'Annual Subscription Fee: ₹1000',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
               ),
-              keyboardType: TextInputType.phone,
             ),
           ],
         ),
@@ -1066,16 +1125,15 @@ class PlayerProfileTab extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              // Update profile
               Navigator.of(context).pop();
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                  content: Text('Profile updated successfully'),
+                  content: Text('Payment successful! Subscription renewed.'),
                   backgroundColor: Colors.green,
                 ),
               );
             },
-            child: const Text('Save'),
+            child: const Text('Pay Now'),
           ),
         ],
       ),

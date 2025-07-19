@@ -7,7 +7,6 @@ import 'package:vishv_umiyadham_foundation/utils/constants.dart';
 class ApiService {
   final StorageService _storageService = StorageService();
 
-  // Helper method to get auth headers
   Future<Map<String, String>> _getHeaders({bool requireAuth = true}) async {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -23,7 +22,6 @@ class ApiService {
     return headers;
   }
 
-  // Handle API response
   dynamic _handleResponse(http.Response response) {
     if (response.statusCode >= 200 && response.statusCode < 300) {
       return json.decode(response.body);
@@ -33,7 +31,6 @@ class ApiService {
     }
   }
 
-  // Register user
   Future<Map<String, dynamic>> register(String name, String email, String phone,
       String password, String role) async {
     final response = await http.post(
@@ -50,14 +47,12 @@ class ApiService {
 
     final data = _handleResponse(response);
 
-    // Save token and user data
     await _storageService.saveToken(data['token']);
     await _storageService.saveUser(json.encode(data['user']));
 
     return data;
   }
 
-  // Login user
   Future<Map<String, dynamic>> login(String email, String password) async {
     final response = await http.post(
       Uri.parse('${ApiConstants.baseUrl}${ApiConstants.login}'),
@@ -70,14 +65,12 @@ class ApiService {
 
     final data = _handleResponse(response);
 
-    // Save token and user data
     await _storageService.saveToken(data['token']);
     await _storageService.saveUser(json.encode(data['user']));
 
     return data;
   }
 
-  // Logout user
   Future<void> logout() async {
     try {
       await http.post(
@@ -85,14 +78,12 @@ class ApiService {
         headers: await _getHeaders(),
       );
     } catch (e) {
-      // Even if the API call fails, we still want to clear local storage
       print('Logout API error: $e');
     } finally {
       await _storageService.clearAll();
     }
   }
 
-  // Get user profile
   Future<User> getUserProfile() async {
     final response = await http.get(
       Uri.parse('${ApiConstants.baseUrl}${ApiConstants.userProfile}'),
@@ -103,7 +94,6 @@ class ApiService {
     return User.fromJson(data['user']);
   }
 
-  // Get teams
   Future<List<dynamic>> getTeams() async {
     final response = await http.get(
       Uri.parse('${ApiConstants.baseUrl}${ApiConstants.teams}'),
@@ -113,7 +103,6 @@ class ApiService {
     return _handleResponse(response);
   }
 
-  // Create team
   Future<dynamic> createTeam(String name, String captainId) async {
     final response = await http.post(
       Uri.parse('${ApiConstants.baseUrl}${ApiConstants.teams}'),
@@ -127,7 +116,6 @@ class ApiService {
     return _handleResponse(response);
   }
 
-  // Invite player
   Future<dynamic> invitePlayer(String teamId, String playerUniqueId) async {
     final response = await http.post(
       Uri.parse('${ApiConstants.baseUrl}${ApiConstants.invitePlayer}'),
@@ -141,7 +129,6 @@ class ApiService {
     return _handleResponse(response);
   }
 
-  // Get matches
   Future<List<dynamic>> getMatches() async {
     final response = await http.get(
       Uri.parse('${ApiConstants.baseUrl}${ApiConstants.matches}'),
@@ -151,7 +138,6 @@ class ApiService {
     return _handleResponse(response);
   }
 
-  // Process payment
   Future<dynamic> processPayment(String captainId, double amount) async {
     final response = await http.post(
       Uri.parse('${ApiConstants.baseUrl}${ApiConstants.payments}'),
@@ -165,7 +151,6 @@ class ApiService {
     return _handleResponse(response);
   }
 
-  // Approve captain (Admin only)
   Future<dynamic> approveCaptain(String captainId) async {
     final response = await http.post(
       Uri.parse('${ApiConstants.baseUrl}${ApiConstants.approveCaptain}'),

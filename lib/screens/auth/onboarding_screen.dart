@@ -15,7 +15,6 @@ class OnboardingScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // App logo or image
               const Spacer(),
               const Icon(
                 Icons.sports_cricket,
@@ -23,8 +22,6 @@ class OnboardingScreen extends StatelessWidget {
                 color: AppTheme.primaryColor,
               ),
               const SizedBox(height: 24),
-
-              // App name and tagline
               const Text(
                 'Vishv Umiyadham Foundation',
                 style: TextStyle(
@@ -43,8 +40,6 @@ class OnboardingScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               const Spacer(),
-
-              // Login button
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -57,8 +52,6 @@ class OnboardingScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-
-              // Sign up button
               SizedBox(
                 width: double.infinity,
                 child: OutlinedButton(

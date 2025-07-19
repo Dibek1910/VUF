@@ -17,10 +17,8 @@ class AuthProvider with ChangeNotifier {
   String? get error => _error;
   bool get isAuthenticated => _user != null;
 
-  // Initialize auth state
   Future<void> initAuth() async {
     _isLoading = true;
-    // Removed the notifyListeners() call here to avoid calling during build phase
 
     try {
       final isLoggedIn = await _storageService.isLoggedIn();
@@ -29,7 +27,6 @@ class AuthProvider with ChangeNotifier {
         if (userData != null) {
           _user = User.fromJson(json.decode(userData));
         } else {
-          // If we have a token but no user data, fetch the profile
           _user = await _apiService.getUserProfile();
           await _storageService.saveUser(json.encode(_user!.toJson()));
         }
@@ -41,14 +38,13 @@ class AuthProvider with ChangeNotifier {
       _user = null;
     } finally {
       _isLoading = false;
-      // Use microtask to ensure notifyListeners() is called after the build phase
+
       Future.microtask(() {
         notifyListeners();
       });
     }
   }
 
-  // Register user
   Future<bool> register(String name, String email, String phone,
       String password, String role) async {
     _isLoading = true;
@@ -69,7 +65,6 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  // Login user
   Future<bool> login(String email, String password) async {
     _isLoading = true;
     _error = null;
@@ -88,7 +83,6 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  // Logout user
   Future<void> logout() async {
     _isLoading = true;
     notifyListeners();
@@ -105,7 +99,6 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  // Refresh user profile
   Future<void> refreshProfile() async {
     _isLoading = true;
     notifyListeners();
@@ -122,7 +115,6 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  // Clear error
   void clearError() {
     _error = null;
     notifyListeners();
