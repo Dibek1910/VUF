@@ -24,59 +24,74 @@ class ApiService {
 
   dynamic _handleResponse(http.Response response) {
     if (response.statusCode >= 200 && response.statusCode < 300) {
+      if (response.body.isEmpty) {
+        return {};
+      }
       return json.decode(response.body);
     } else {
-      final error = json.decode(response.body);
+      final error = response.body.isNotEmpty
+          ? json.decode(response.body)
+          : {'message': 'Unknown error occurred'};
       throw Exception(error['message'] ?? 'Something went wrong');
     }
   }
 
   Future<Map<String, dynamic>> register(String name, String email, String phone,
       String password, String role) async {
-    final response = await http.post(
-      Uri.parse('${ApiConstants.baseUrl}${ApiConstants.register}'),
-      headers: await _getHeaders(requireAuth: false),
-      body: json.encode({
-        'name': name,
-        'email': email,
-        'phone': phone,
-        'password': password,
-        'role': role,
-      }),
-    );
+    try {
+      final response = await http
+          .post(
+            Uri.parse('${ApiConstants.baseUrl}${ApiConstants.register}'),
+            headers: await _getHeaders(requireAuth: false),
+            body: json.encode({
+              'name': name,
+              'email': email,
+              'phone': phone,
+              'password': password,
+              'role': role,
+            }),
+          )
+          .timeout(Duration(seconds: AppConstants.requestTimeout));
 
-    final data = _handleResponse(response);
-
-    await _storageService.saveToken(data['token']);
-    await _storageService.saveUser(json.encode(data['user']));
-
-    return data;
+      final data = _handleResponse(response);
+      await _storageService.saveToken(data['token']);
+      await _storageService.saveUser(json.encode(data['user']));
+      return data;
+    } catch (e) {
+      throw Exception('Registration failed: ${e.toString()}');
+    }
   }
 
   Future<Map<String, dynamic>> login(String email, String password) async {
-    final response = await http.post(
-      Uri.parse('${ApiConstants.baseUrl}${ApiConstants.login}'),
-      headers: await _getHeaders(requireAuth: false),
-      body: json.encode({
-        'email': email,
-        'password': password,
-      }),
-    );
+    try {
+      final response = await http
+          .post(
+            Uri.parse('${ApiConstants.baseUrl}${ApiConstants.login}'),
+            headers: await _getHeaders(requireAuth: false),
+            body: json.encode({
+              'email': email,
+              'password': password,
+            }),
+          )
+          .timeout(Duration(seconds: AppConstants.requestTimeout));
 
-    final data = _handleResponse(response);
-
-    await _storageService.saveToken(data['token']);
-    await _storageService.saveUser(json.encode(data['user']));
-
-    return data;
+      final data = _handleResponse(response);
+      await _storageService.saveToken(data['token']);
+      await _storageService.saveUser(json.encode(data['user']));
+      return data;
+    } catch (e) {
+      throw Exception('Login failed: ${e.toString()}');
+    }
   }
 
   Future<void> logout() async {
     try {
-      await http.post(
-        Uri.parse('${ApiConstants.baseUrl}${ApiConstants.logout}'),
-        headers: await _getHeaders(),
-      );
+      await http
+          .post(
+            Uri.parse('${ApiConstants.baseUrl}${ApiConstants.logout}'),
+            headers: await _getHeaders(),
+          )
+          .timeout(Duration(seconds: AppConstants.requestTimeout));
     } catch (e) {
       print('Logout API error: $e');
     } finally {
@@ -85,81 +100,18 @@ class ApiService {
   }
 
   Future<User> getUserProfile() async {
-    final response = await http.get(
-      Uri.parse('${ApiConstants.baseUrl}${ApiConstants.userProfile}'),
-      headers: await _getHeaders(),
-    );
+    try {
+      final response = await http
+          .get(
+            Uri.parse('${ApiConstants.baseUrl}${ApiConstants.userProfile}'),
+            headers: await _getHeaders(),
+          )
+          .timeout(Duration(seconds: AppConstants.requestTimeout));
 
-    final data = _handleResponse(response);
-    return User.fromJson(data['user']);
-  }
-
-  Future<List<dynamic>> getTeams() async {
-    final response = await http.get(
-      Uri.parse('${ApiConstants.baseUrl}${ApiConstants.teams}'),
-      headers: await _getHeaders(),
-    );
-
-    return _handleResponse(response);
-  }
-
-  Future<dynamic> createTeam(String name, String captainId) async {
-    final response = await http.post(
-      Uri.parse('${ApiConstants.baseUrl}${ApiConstants.teams}'),
-      headers: await _getHeaders(),
-      body: json.encode({
-        'name': name,
-        'captainId': captainId,
-      }),
-    );
-
-    return _handleResponse(response);
-  }
-
-  Future<dynamic> invitePlayer(String teamId, String playerUniqueId) async {
-    final response = await http.post(
-      Uri.parse('${ApiConstants.baseUrl}${ApiConstants.invitePlayer}'),
-      headers: await _getHeaders(),
-      body: json.encode({
-        'teamId': teamId,
-        'playerUniqueId': playerUniqueId,
-      }),
-    );
-
-    return _handleResponse(response);
-  }
-
-  Future<List<dynamic>> getMatches() async {
-    final response = await http.get(
-      Uri.parse('${ApiConstants.baseUrl}${ApiConstants.matches}'),
-      headers: await _getHeaders(),
-    );
-
-    return _handleResponse(response);
-  }
-
-  Future<dynamic> processPayment(String captainId, double amount) async {
-    final response = await http.post(
-      Uri.parse('${ApiConstants.baseUrl}${ApiConstants.payments}'),
-      headers: await _getHeaders(),
-      body: json.encode({
-        'captainId': captainId,
-        'amount': amount,
-      }),
-    );
-
-    return _handleResponse(response);
-  }
-
-  Future<dynamic> approveCaptain(String captainId) async {
-    final response = await http.post(
-      Uri.parse('${ApiConstants.baseUrl}${ApiConstants.approveCaptain}'),
-      headers: await _getHeaders(),
-      body: json.encode({
-        'captainId': captainId,
-      }),
-    );
-
-    return _handleResponse(response);
+      final data = _handleResponse(response);
+      return User.fromJson(data);
+    } catch (e) {
+      throw Exception('Failed to get user profile: ${e.toString()}');
+    }
   }
 }

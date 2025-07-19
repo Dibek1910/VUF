@@ -5,8 +5,6 @@ import 'package:vishv_umiyadham_foundation/screens/auth/onboarding_screen.dart';
 import 'package:vishv_umiyadham_foundation/screens/dashboard/admin/admin_dashboard.dart';
 import 'package:vishv_umiyadham_foundation/screens/dashboard/captain/captain_dashboard.dart';
 import 'package:vishv_umiyadham_foundation/screens/dashboard/player/player_dashboard.dart';
-import 'package:vishv_umiyadham_foundation/utils/constants.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:vishv_umiyadham_foundation/utils/app_theme.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -20,7 +18,6 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-
     Future.microtask(() {
       _initializeApp();
     });
@@ -28,11 +25,14 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> _initializeApp() async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    await authProvider.initAuth();
+
+    await Future.delayed(const Duration(seconds: 2));
+
+    final isLoggedIn = await authProvider.checkAuthStatus();
 
     if (!mounted) return;
 
-    if (authProvider.isAuthenticated) {
+    if (isLoggedIn && authProvider.user != null) {
       _navigateToDashboard(authProvider);
     } else {
       Navigator.of(context).pushReplacement(
@@ -69,37 +69,62 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppTheme.primaryColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'Vishv Umiyadham',
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
+            Container(
+              width: 120,
+              height: 120,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(30),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 20,
+                    offset: const Offset(0, 10),
+                  ),
+                ],
+              ),
+              child: const Icon(
+                Icons.sports_cricket,
+                size: 60,
                 color: AppTheme.primaryColor,
               ),
             ),
+            const SizedBox(height: 30),
             const Text(
-              'Foundation',
+              'Vishv Umiyadham\nFoundation',
               style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-                color: AppTheme.secondaryColor,
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                height: 1.2,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              'Cricket Management System',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.white70,
+                fontWeight: FontWeight.w400,
               ),
             ),
-            const SizedBox(height: 30),
-            const SpinKitDoubleBounce(
-              color: AppTheme.primaryColor,
-              size: 50.0,
+            const SizedBox(height: 50),
+            const CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+              strokeWidth: 3,
             ),
             const SizedBox(height: 20),
-            Text(
+            const Text(
               'Loading...',
               style: TextStyle(
                 fontSize: 16,
-                color: Theme.of(context).textTheme.bodyLarge?.color,
+                color: Colors.white70,
               ),
             ),
           ],

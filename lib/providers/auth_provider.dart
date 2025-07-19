@@ -17,8 +17,9 @@ class AuthProvider with ChangeNotifier {
   String? get error => _error;
   bool get isAuthenticated => _user != null;
 
-  Future<void> initAuth() async {
+  Future<bool> checkAuthStatus() async {
     _isLoading = true;
+    notifyListeners();
 
     try {
       final isLoggedIn = await _storageService.isLoggedIn();
@@ -26,22 +27,24 @@ class AuthProvider with ChangeNotifier {
         final userData = await _storageService.getUser();
         if (userData != null) {
           _user = User.fromJson(json.decode(userData));
+          _error = null;
+          return true;
         } else {
           _user = await _apiService.getUserProfile();
           await _storageService.saveUser(json.encode(_user!.toJson()));
+          _error = null;
+          return true;
         }
       }
-      _error = null;
+      return false;
     } catch (e) {
       _error = e.toString();
       await _storageService.clearAll();
       _user = null;
+      return false;
     } finally {
       _isLoading = false;
-
-      Future.microtask(() {
-        notifyListeners();
-      });
+      notifyListeners();
     }
   }
 
@@ -55,6 +58,7 @@ class AuthProvider with ChangeNotifier {
       final data =
           await _apiService.register(name, email, phone, password, role);
       _user = User.fromJson(data['user']);
+      _error = null;
       return true;
     } catch (e) {
       _error = e.toString();
@@ -73,6 +77,7 @@ class AuthProvider with ChangeNotifier {
     try {
       final data = await _apiService.login(email, password);
       _user = User.fromJson(data['user']);
+      _error = null;
       return true;
     } catch (e) {
       _error = e.toString();
@@ -94,22 +99,7 @@ class AuthProvider with ChangeNotifier {
     } finally {
       await _storageService.clearAll();
       _user = null;
-      _isLoading = false;
-      notifyListeners();
-    }
-  }
-
-  Future<void> refreshProfile() async {
-    _isLoading = true;
-    notifyListeners();
-
-    try {
-      _user = await _apiService.getUserProfile();
-      await _storageService.saveUser(json.encode(_user!.toJson()));
       _error = null;
-    } catch (e) {
-      _error = e.toString();
-    } finally {
       _isLoading = false;
       notifyListeners();
     }

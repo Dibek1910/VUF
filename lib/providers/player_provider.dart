@@ -3,7 +3,6 @@ import 'package:vishv_umiyadham_foundation/models/team_model.dart';
 import 'package:vishv_umiyadham_foundation/models/match_model.dart';
 import 'package:vishv_umiyadham_foundation/services/player_service.dart';
 import 'package:vishv_umiyadham_foundation/services/error_service.dart';
-import 'package:vishv_umiyadham_foundation/utils/constants.dart';
 
 class PlayerProvider with ChangeNotifier {
   final PlayerService _playerService = PlayerService();
