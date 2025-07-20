@@ -15,7 +15,7 @@ class ApiConstants {
     return 'http://localhost:5001/api';
   }
 
-  // static const String baseUrl = 'https://vuf-backend.onrender.com/api';
+// static const String baseUrl = 'https://vuf-backend.onrender.com/api';
 
   static const String register = '/auth/register';
   static const String login = '/auth/login';
@@ -31,14 +31,25 @@ class ApiConstants {
 
   static const String payments = '/payments';
 
-  static const String approveCaptain = '/admin/approve-captain';
-
   static const String playerInvitations = '/player/invitations';
   static const String playerAcceptInvitation = '/player/accept-invitation';
   static const String playerDeclineInvitation = '/player/decline-invitation';
   static const String playerTeam = '/player/team';
   static const String playerMatches = '/player/matches';
   static const String playerDashboard = '/player/dashboard';
+
+  static const String adminDashboard = '/admin/dashboard';
+  static const String adminPendingCaptains = '/admin/pending-captains';
+  static const String adminApproveCaptain = '/admin/approve-captain';
+  static const String adminRejectCaptain = '/admin/reject-captain';
+  static const String adminTeams = '/admin/teams';
+  static const String adminPendingRemovals = '/admin/pending-removals';
+  static const String adminApproveRemoval = '/admin/approve-removal';
+  static const String adminRejectRemoval = '/admin/reject-removal';
+  static const String adminMatches = '/admin/matches';
+  static const String adminUpdateScore = '/admin/update-score';
+  static const String adminUpdateStatus = '/admin/update-status';
+  static const String adminUsers = '/admin/users';
 }
 
 class StorageConstants {
