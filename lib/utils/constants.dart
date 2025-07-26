@@ -15,22 +15,28 @@ class ApiConstants {
     return 'http://localhost:5001/api';
   }
 
-// static const String baseUrl = 'https://vuf-backend.onrender.com/api';
+  // static const String baseUrl = 'https://vuf-backend.onrender.com/api';
 
+  // Auth endpoints
   static const String register = '/auth/register';
   static const String login = '/auth/login';
   static const String logout = '/auth/logout';
   static const String userProfile = '/auth/profile';
 
+  // Team endpoints
   static const String teams = '/teams';
   static const String invitePlayer = '/teams/invite';
   static const String removePlayer = '/teams/remove-player';
+  static const String captainTeams = '/teams/captain/my-teams';
 
+  // Match endpoints
   static const String matches = '/matches';
   static const String updateScore = '/matches/score';
 
+  // Payment endpoints
   static const String payments = '/payments';
 
+  // Player endpoints
   static const String playerInvitations = '/player/invitations';
   static const String playerAcceptInvitation = '/player/accept-invitation';
   static const String playerDeclineInvitation = '/player/decline-invitation';
@@ -38,6 +44,7 @@ class ApiConstants {
   static const String playerMatches = '/player/matches';
   static const String playerDashboard = '/player/dashboard';
 
+  // Admin endpoints
   static const String adminDashboard = '/admin/dashboard';
   static const String adminPendingCaptains = '/admin/pending-captains';
   static const String adminApproveCaptain = '/admin/approve-captain';

@@ -17,13 +17,13 @@ class Team {
 
   factory Team.fromJson(Map<String, dynamic> json) {
     return Team(
-      id: json['id'].toString(),
-      name: json['name'],
-      captain: User.fromJson(json['captain']),
-      players: (json['players'] as List)
+      id: json['_id']?.toString() ?? json['id']?.toString() ?? '',
+      name: json['name'] ?? '',
+      captain: User.fromJson(json['captainId'] ?? {}),
+      players: (json['players'] as List? ?? [])
           .map((player) => User.fromJson(player))
           .toList(),
-      removalRequested: json['removal_requested']?.toString(),
+      removalRequested: json['removalRequested']?.toString(),
     );
   }
 
@@ -33,7 +33,7 @@ class Team {
       'name': name,
       'captain': captain.toJson(),
       'players': players.map((player) => player.toJson()).toList(),
-      'removal_requested': removalRequested,
+      'removalRequested': removalRequested,
     };
   }
 }
