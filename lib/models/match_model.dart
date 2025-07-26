@@ -23,7 +23,8 @@ class Match {
     Map<String, int> scoresMap = {};
     if (json['scores'] != null) {
       for (var score in json['scores']) {
-        scoresMap[score['teamId']['_id'] ?? score['teamId']['id']] = score['score'] ?? 0;
+        scoresMap[score['teamId']['_id'] ?? score['teamId']['id']] =
+            score['score'] ?? 0;
       }
     }
 
@@ -34,9 +35,8 @@ class Match {
           .map((team) => Team.fromJson(team))
           .toList(),
       scores: scoresMap,
-      matchDate: json['matchDate'] != null 
-          ? DateTime.parse(json['matchDate']) 
-          : null,
+      matchDate:
+          json['matchDate'] != null ? DateTime.parse(json['matchDate']) : null,
       location: json['location'],
       description: json['description'],
     );
