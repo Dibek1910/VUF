@@ -15,10 +15,7 @@ class CaptainHomeTab extends StatelessWidget {
 
     return RefreshIndicator(
       onRefresh: () async {
-        await Future.wait([
-          captainProvider.fetchCaptainTeams(),
-          captainProvider.fetchCaptainMatches(),
-        ]);
+        await captainProvider.fetchCaptainDashboard();
       },
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
@@ -28,9 +25,17 @@ class CaptainHomeTab extends StatelessWidget {
           children: [
             _buildCaptainInfoCard(user, captainProvider),
             const SizedBox(height: 24),
-            _buildTeamSection(context, captainProvider),
-            const SizedBox(height: 24),
-            _buildRecentMatchesSection(context, captainProvider),
+            if (!captainProvider.isApproved) ...[
+              _buildApprovalPendingCard(),
+              const SizedBox(height: 24),
+            ],
+            if (captainProvider.isApproved) ...[
+              _buildStatisticsSection(captainProvider),
+              const SizedBox(height: 24),
+              _buildTeamSection(context, captainProvider),
+              const SizedBox(height: 24),
+              _buildRecentMatchesSection(context, captainProvider),
+            ],
           ],
         ),
       ),
@@ -38,6 +43,9 @@ class CaptainHomeTab extends StatelessWidget {
   }
 
   Widget _buildCaptainInfoCard(user, CaptainProvider captainProvider) {
+    final dashboardData = captainProvider.dashboardData;
+    final captain = dashboardData['captain'] ?? {};
+
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(
@@ -54,7 +62,9 @@ class CaptainHomeTab extends StatelessWidget {
                   backgroundColor: AppTheme.primaryColor,
                   radius: 30,
                   child: Text(
-                    user?.name.substring(0, 1) ?? 'C',
+                    (captain['name'] ?? user?.name ?? 'C')
+                        .substring(0, 1)
+                        .toUpperCase(),
                     style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -68,7 +78,7 @@ class CaptainHomeTab extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        user?.name ?? 'Captain',
+                        captain['name'] ?? user?.name ?? 'Captain',
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -76,7 +86,9 @@ class CaptainHomeTab extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        user?.email ?? 'captain@example.com',
+                        captain['email'] ??
+                            user?.email ??
+                            'captain@example.com',
                         style: const TextStyle(
                           fontSize: 14,
                           color: AppTheme.textLightColor,
@@ -110,16 +122,18 @@ class CaptainHomeTab extends StatelessWidget {
                               vertical: 4,
                             ),
                             decoration: BoxDecoration(
-                              color: user?.isApproved == true
+                              color: (captain['isApproved'] ?? false)
                                   ? Colors.green.withOpacity(0.1)
                                   : Colors.orange.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Text(
-                              user?.isApproved == true ? 'Approved' : 'Pending',
+                              (captain['isApproved'] ?? false)
+                                  ? 'Approved'
+                                  : 'Pending',
                               style: TextStyle(
                                 fontSize: 12,
-                                color: user?.isApproved == true
+                                color: (captain['isApproved'] ?? false)
                                     ? Colors.green
                                     : Colors.orange,
                                 fontWeight: FontWeight.bold,
@@ -139,8 +153,145 @@ class CaptainHomeTab extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildInfoItem('Unique ID', user?.uniqueId ?? 'Loading...')
+                _buildInfoItem('Unique ID',
+                    captain['uniqueId'] ?? user?.uniqueId ?? 'Loading...'),
               ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildApprovalPendingCard() {
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.orange.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.orange.withOpacity(0.3)),
+        ),
+        child: Column(
+          children: [
+            const Icon(
+              Icons.hourglass_empty,
+              size: 48,
+              color: Colors.orange,
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'Approval Pending',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.orange,
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Your captain registration is pending admin approval. You will be able to create teams and manage players once approved.',
+              style: TextStyle(
+                color: Colors.orange,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStatisticsSection(CaptainProvider captainProvider) {
+    final statistics = captainProvider.dashboardData['statistics'] ?? {};
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Statistics',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 16),
+        GridView.count(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          crossAxisCount: 2,
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 16,
+          childAspectRatio: 1.2,
+          children: [
+            _buildStatCard(
+              'Teams',
+              '${statistics['totalTeams'] ?? 0}',
+              Icons.group,
+              Colors.blue,
+            ),
+            _buildStatCard(
+              'Players',
+              '${statistics['totalPlayers'] ?? 0}',
+              Icons.people,
+              Colors.green,
+            ),
+            _buildStatCard(
+              'Matches',
+              '${statistics['totalMatches'] ?? 0}',
+              Icons.sports_cricket,
+              Colors.orange,
+            ),
+            _buildStatCard(
+              'Pending Invites',
+              '${statistics['pendingInvitations'] ?? 0}',
+              Icons.mail_outline,
+              Colors.purple,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStatCard(
+      String title, String value, IconData icon, Color color) {
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              size: 32,
+              color: color,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              value,
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: color,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 12,
+                color: AppTheme.textLightColor,
+              ),
+              textAlign: TextAlign.center,
             ),
           ],
         ),
@@ -309,6 +460,8 @@ class CaptainHomeTab extends StatelessWidget {
 
   Widget _buildRecentMatchesSection(
       BuildContext context, CaptainProvider captainProvider) {
+    final recentMatches = captainProvider.dashboardData['recentMatches'] ?? [];
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -332,7 +485,7 @@ class CaptainHomeTab extends StatelessWidget {
         const SizedBox(height: 16),
         if (captainProvider.isLoading)
           const Center(child: CircularProgressIndicator())
-        else if (captainProvider.captainMatches.isEmpty)
+        else if (recentMatches.isEmpty)
           Card(
             elevation: 2,
             shape: RoundedRectangleBorder(
@@ -361,18 +514,12 @@ class CaptainHomeTab extends StatelessWidget {
             ),
           )
         else
-          ...captainProvider.captainMatches
-              .take(3)
-              .map((match) => _buildMatchCard(match)),
+          ...recentMatches.take(3).map((match) => _buildMatchCard(match)),
       ],
     );
   }
 
-  Widget _buildMatchCard(match) {
-    final isWon = match.status == 'Completed' &&
-        match.scores.isNotEmpty &&
-        match.teams.length >= 2;
-
+  Widget _buildMatchCard(dynamic match) {
     return Card(
       elevation: 2,
       margin: const EdgeInsets.only(bottom: 12),
@@ -387,8 +534,10 @@ class CaptainHomeTab extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  match.matchDate != null
-                      ? '${match.matchDate!.day}/${match.matchDate!.month}/${match.matchDate!.year}'
+                  match['matchDate'] != null
+                      ? DateTime.parse(match['matchDate'])
+                          .toString()
+                          .split(' ')[0]
                       : 'TBD',
                   style: const TextStyle(
                     color: AppTheme.textLightColor,
@@ -401,22 +550,15 @@ class CaptainHomeTab extends StatelessWidget {
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: match.status == 'Completed'
-                        ? Colors.grey.withOpacity(0.1)
-                        : match.status == 'Live'
-                            ? Colors.green.withOpacity(0.1)
-                            : Colors.blue.withOpacity(0.1),
+                    color:
+                        _getMatchStatusColor(match['status']).withOpacity(0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
-                    match.status,
+                    match['status'],
                     style: TextStyle(
                       fontSize: 12,
-                      color: match.status == 'Completed'
-                          ? Colors.grey
-                          : match.status == 'Live'
-                              ? Colors.green
-                              : Colors.blue,
+                      color: _getMatchStatusColor(match['status']),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -434,7 +576,7 @@ class CaptainHomeTab extends StatelessWidget {
                         backgroundColor: Colors.blue,
                         radius: 20,
                         child: Text(
-                          match.teams[0].name[0].toUpperCase(),
+                          (match['teams'][0]['name'] ?? 'T')[0].toUpperCase(),
                           style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -443,20 +585,11 @@ class CaptainHomeTab extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        match.teams[0].name,
+                        match['teams'][0]['name'] ?? 'Team 1',
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 4),
-                      if (match.status != 'Upcoming' && match.scores.isNotEmpty)
-                        Text(
-                          '${match.scores[match.teams[0].id] ?? 0}',
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
                     ],
                   ),
                 ),
@@ -475,8 +608,9 @@ class CaptainHomeTab extends StatelessWidget {
                         backgroundColor: Colors.red,
                         radius: 20,
                         child: Text(
-                          match.teams.length > 1
-                              ? match.teams[1].name[0].toUpperCase()
+                          match['teams'].length > 1
+                              ? (match['teams'][1]['name'] ?? 'T')[0]
+                                  .toUpperCase()
                               : 'T',
                           style: const TextStyle(
                             color: Colors.white,
@@ -486,22 +620,13 @@ class CaptainHomeTab extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        match.teams.length > 1 ? match.teams[1].name : 'TBD',
+                        match['teams'].length > 1
+                            ? match['teams'][1]['name'] ?? 'Team 2'
+                            : 'TBD',
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 4),
-                      if (match.status != 'Upcoming' &&
-                          match.scores.isNotEmpty &&
-                          match.teams.length > 1)
-                        Text(
-                          '${match.scores[match.teams[1].id] ?? 0}',
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
                     ],
                   ),
                 ),
@@ -511,6 +636,21 @@ class CaptainHomeTab extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Color _getMatchStatusColor(String? status) {
+    switch (status) {
+      case 'Live':
+        return Colors.green;
+      case 'Upcoming':
+        return Colors.blue;
+      case 'Completed':
+        return Colors.grey;
+      case 'Cancelled':
+        return Colors.red;
+      default:
+        return Colors.grey;
+    }
   }
 
   Widget _buildInfoItem(String label, String value) {

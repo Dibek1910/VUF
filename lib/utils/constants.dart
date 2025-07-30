@@ -50,6 +50,13 @@ class ApiConstants {
   static const String adminUpdateScore = '/admin/update-score';
   static const String adminUpdateStatus = '/admin/update-status';
   static const String adminUsers = '/admin/users';
+
+  static const String captainDashboard = '/captain/dashboard';
+  static const String captainCreateTeam = '/captain/create-team';
+  static const String captainInvitePlayer = '/captain/invite-player';
+  static const String captainAssignJersey = '/captain/assign-jersey';
+  static const String captainMatches = '/captain/matches';
+  static const String captainUpdateTeam = '/captain/team';
 }
 
 class StorageConstants {
@@ -75,6 +82,8 @@ class ErrorMessages {
   static const String invalidCredentials = 'Invalid email or password.';
   static const String userNotFound = 'User not found.';
   static const String emailAlreadyExists = 'Email already exists.';
+  static const String captainNotApproved =
+      'Captain approval pending. Please wait for admin approval.';
 }
 
 class SuccessMessages {
@@ -87,4 +96,5 @@ class SuccessMessages {
   static const String playerInvited = 'Player invitation sent successfully!';
   static const String playerRemovalRequested =
       'Player removal request sent to admin';
+  static const String jerseyAssigned = 'Jersey number assigned successfully!';
 }

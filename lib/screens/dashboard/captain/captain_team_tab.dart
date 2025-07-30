@@ -12,6 +12,7 @@ class CaptainTeamTab extends StatelessWidget {
 
     return RefreshIndicator(
       onRefresh: () async {
+        await captainProvider.fetchCaptainDashboard();
         await captainProvider.fetchCaptainTeams();
       },
       child: SingleChildScrollView(
@@ -22,6 +23,8 @@ class CaptainTeamTab extends StatelessWidget {
           children: [
             if (captainProvider.isLoading)
               const Center(child: CircularProgressIndicator())
+            else if (!captainProvider.isApproved)
+              _buildNotApprovedCard()
             else if (captainProvider.currentTeam == null)
               _buildNoTeamSection(context, captainProvider)
             else ...[
@@ -32,6 +35,51 @@ class CaptainTeamTab extends StatelessWidget {
                   context, captainProvider.currentTeam!, captainProvider),
             ],
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNotApprovedCard() {
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(32),
+        decoration: BoxDecoration(
+          color: Colors.orange.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.orange.withOpacity(0.3)),
+        ),
+        child: const Center(
+          child: Column(
+            children: [
+              Icon(
+                Icons.hourglass_empty,
+                size: 64,
+                color: Colors.orange,
+              ),
+              SizedBox(height: 16),
+              Text(
+                'Captain Approval Pending',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.orange,
+                ),
+              ),
+              SizedBox(height: 8),
+              Text(
+                'Please wait for admin approval before you can create and manage teams.',
+                style: TextStyle(
+                  color: Colors.orange,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -146,9 +194,42 @@ class CaptainTeamTab extends StatelessWidget {
                 ),
               ],
             ),
+            const SizedBox(height: 16),
+            const Divider(),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildTeamInfoItem('Total Players', '${team.players.length}'),
+                _buildTeamInfoItem('Captain', team.captain.name),
+              ],
+            ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildTeamInfoItem(String label, String value) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 12,
+            color: AppTheme.textLightColor,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          value,
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
     );
   }
 
@@ -158,15 +239,24 @@ class CaptainTeamTab extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'Players (${team.players.length})',
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+            const Expanded(
+              child: Text(
+                'Players',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
+            Text(
+              '(${team.players.length})',
+              style: const TextStyle(
+                fontSize: 16,
+                color: AppTheme.textLightColor,
+              ),
+            ),
+            const SizedBox(width: 16),
             ElevatedButton.icon(
               onPressed: () {
                 _showAddPlayerDialog(context, team, captainProvider);
@@ -175,7 +265,7 @@ class CaptainTeamTab extends StatelessWidget {
               label: const Text('Add Player'),
               style: ElevatedButton.styleFrom(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               ),
             ),
           ],
@@ -252,12 +342,25 @@ class CaptainTeamTab extends StatelessWidget {
                 trailing: !isCaptain
                     ? PopupMenuButton<String>(
                         onSelected: (value) async {
-                          if (value == 'remove') {
+                          if (value == 'jersey') {
+                            _showAssignJerseyDialog(
+                                context, team, player, captainProvider);
+                          } else if (value == 'remove') {
                             _showRemovePlayerDialog(
                                 context, team, player, captainProvider);
                           }
                         },
                         itemBuilder: (context) => [
+                          const PopupMenuItem(
+                            value: 'jersey',
+                            child: Row(
+                              children: [
+                                Icon(Icons.sports_soccer, color: Colors.blue),
+                                SizedBox(width: 8),
+                                Text('Assign Jersey'),
+                              ],
+                            ),
+                          ),
                           const PopupMenuItem(
                             value: 'remove',
                             child: Row(
@@ -482,6 +585,86 @@ class CaptainTeamTab extends StatelessWidget {
               }
             },
             child: const Text('Send Invitation'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showAssignJerseyDialog(
+      BuildContext context, team, player, CaptainProvider captainProvider) {
+    final jerseyController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Assign Jersey Number'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Assign jersey number to ${player.name}',
+              style: const TextStyle(
+                color: AppTheme.textLightColor,
+              ),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: jerseyController,
+              decoration: const InputDecoration(
+                labelText: 'Jersey Number',
+                hintText: 'Enter jersey number (1-99)',
+                prefixIcon: Icon(Icons.sports_soccer),
+              ),
+              keyboardType: TextInputType.number,
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              final jerseyNumber = int.tryParse(jerseyController.text);
+              if (jerseyNumber != null &&
+                  jerseyNumber > 0 &&
+                  jerseyNumber <= 99) {
+                Navigator.of(context).pop();
+                final success = await captainProvider.assignJerseyNumber(
+                  team.id,
+                  player.id,
+                  jerseyNumber,
+                );
+                if (success && context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                          'Jersey number $jerseyNumber assigned to ${player.name}!'),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                } else if (context.mounted && captainProvider.error != null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(captainProvider.error!),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Please enter a valid jersey number (1-99)'),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
+            },
+            child: const Text('Assign'),
           ),
         ],
       ),

@@ -38,7 +38,7 @@ class _CaptainDashboardState extends State<CaptainDashboard> {
   Future<void> _initializeCaptainData(CaptainProvider captainProvider) async {
     try {
       await Future.wait([
-        captainProvider.fetchCaptainTeams(),
+        captainProvider.fetchCaptainDashboard(),
         captainProvider.fetchCaptainMatches(),
       ]);
     } catch (e) {

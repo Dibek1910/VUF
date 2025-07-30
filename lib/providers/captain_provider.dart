@@ -7,11 +7,13 @@ import 'package:vishv_umiyadham_foundation/services/error_service.dart';
 class CaptainProvider with ChangeNotifier {
   final CaptainService _captainService = CaptainService();
 
+  Map<String, dynamic> _dashboardData = {};
   List<Team> _captainTeams = [];
   List<Match> _captainMatches = [];
   bool _isLoading = false;
   String? _error;
 
+  Map<String, dynamic> get dashboardData => _dashboardData;
   List<Team> get captainTeams => _captainTeams;
   List<Match> get captainMatches => _captainMatches;
   bool get isLoading => _isLoading;
@@ -19,6 +21,8 @@ class CaptainProvider with ChangeNotifier {
 
   Team? get currentTeam =>
       _captainTeams.isNotEmpty ? _captainTeams.first : null;
+
+  bool get isApproved => _dashboardData['captain']?['isApproved'] ?? false;
 
   void _setLoading(bool loading) {
     _isLoading = loading;
@@ -28,6 +32,22 @@ class CaptainProvider with ChangeNotifier {
   void _setError(String? error) {
     _error = error;
     notifyListeners();
+  }
+
+  Future<void> fetchCaptainDashboard() async {
+    _setLoading(true);
+    _setError(null);
+
+    try {
+      _dashboardData = await _captainService.getCaptainDashboard();
+      _captainTeams = (_dashboardData['teams'] as List? ?? [])
+          .map((team) => Team.fromJson(team))
+          .toList();
+    } catch (e) {
+      _setError(ErrorService.getErrorMessage(e));
+    } finally {
+      _setLoading(false);
+    }
   }
 
   Future<void> fetchCaptainTeams() async {
@@ -50,6 +70,7 @@ class CaptainProvider with ChangeNotifier {
     try {
       final newTeam = await _captainService.createTeam(name);
       _captainTeams.add(newTeam);
+      await fetchCaptainDashboard();
       return true;
     } catch (e) {
       _setError(ErrorService.getErrorMessage(e));
@@ -65,6 +86,23 @@ class CaptainProvider with ChangeNotifier {
 
     try {
       await _captainService.invitePlayer(teamId, playerUniqueId);
+      await fetchCaptainTeams();
+      return true;
+    } catch (e) {
+      _setError(ErrorService.getErrorMessage(e));
+      return false;
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  Future<bool> assignJerseyNumber(
+      String teamId, String playerId, int jerseyNumber) async {
+    _setLoading(true);
+    _setError(null);
+
+    try {
+      await _captainService.assignJerseyNumber(teamId, playerId, jerseyNumber);
       await fetchCaptainTeams();
       return true;
     } catch (e) {
@@ -92,13 +130,13 @@ class CaptainProvider with ChangeNotifier {
   }
 
   Future<bool> updateTeam(
-      String teamId, String name, List<int>? jerseyNumbers) async {
+      String teamId, String name, String? description) async {
     _setLoading(true);
     _setError(null);
 
     try {
       final updatedTeam =
-          await _captainService.updateTeam(teamId, name, jerseyNumbers);
+          await _captainService.updateTeam(teamId, name, description);
       final index = _captainTeams.indexWhere((team) => team.id == teamId);
       if (index != -1) {
         _captainTeams[index] = updatedTeam;
@@ -118,13 +156,6 @@ class CaptainProvider with ChangeNotifier {
 
     try {
       _captainMatches = await _captainService.getCaptainMatches();
-
-      if (_captainTeams.isNotEmpty) {
-        final teamIds = _captainTeams.map((team) => team.id).toList();
-        _captainMatches = _captainMatches.where((match) {
-          return match.teams.any((team) => teamIds.contains(team.id));
-        }).toList();
-      }
     } catch (e) {
       _setError(ErrorService.getErrorMessage(e));
     } finally {
@@ -138,6 +169,7 @@ class CaptainProvider with ChangeNotifier {
   }
 
   void clearData() {
+    _dashboardData = {};
     _captainTeams = [];
     _captainMatches = [];
     _error = null;

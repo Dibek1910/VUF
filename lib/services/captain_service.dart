@@ -35,6 +35,22 @@ class CaptainService {
     }
   }
 
+  Future<Map<String, dynamic>> getCaptainDashboard() async {
+    try {
+      final response = await http
+          .get(
+            Uri.parse(
+                '${ApiConstants.baseUrl}${ApiConstants.captainDashboard}'),
+            headers: await _getHeaders(),
+          )
+          .timeout(Duration(seconds: AppConstants.requestTimeout));
+
+      return _handleResponse(response);
+    } catch (e) {
+      throw Exception('Failed to fetch captain dashboard: ${e.toString()}');
+    }
+  }
+
   Future<List<Team>> getCaptainTeams() async {
     try {
       final response = await http
@@ -55,17 +71,17 @@ class CaptainService {
     try {
       final response = await http
           .post(
-            Uri.parse('${ApiConstants.baseUrl}${ApiConstants.teams}'),
+            Uri.parse(
+                '${ApiConstants.baseUrl}${ApiConstants.captainCreateTeam}'),
             headers: await _getHeaders(),
             body: json.encode({
               'name': name,
-              'captainId': await _getCurrentUserId(),
             }),
           )
           .timeout(Duration(seconds: AppConstants.requestTimeout));
 
       final data = _handleResponse(response);
-      return Team.fromJson(data);
+      return Team.fromJson(data['team']);
     } catch (e) {
       throw Exception('Failed to create team: ${e.toString()}');
     }
@@ -75,7 +91,8 @@ class CaptainService {
     try {
       final response = await http
           .post(
-            Uri.parse('${ApiConstants.baseUrl}${ApiConstants.invitePlayer}'),
+            Uri.parse(
+                '${ApiConstants.baseUrl}${ApiConstants.captainInvitePlayer}'),
             headers: await _getHeaders(),
             body: json.encode({
               'teamId': teamId,
@@ -87,6 +104,28 @@ class CaptainService {
       return _handleResponse(response);
     } catch (e) {
       throw Exception('Failed to invite player: ${e.toString()}');
+    }
+  }
+
+  Future<dynamic> assignJerseyNumber(
+      String teamId, String playerId, int jerseyNumber) async {
+    try {
+      final response = await http
+          .post(
+            Uri.parse(
+                '${ApiConstants.baseUrl}${ApiConstants.captainAssignJersey}'),
+            headers: await _getHeaders(),
+            body: json.encode({
+              'teamId': teamId,
+              'playerId': playerId,
+              'jerseyNumber': jerseyNumber,
+            }),
+          )
+          .timeout(Duration(seconds: AppConstants.requestTimeout));
+
+      return _handleResponse(response);
+    } catch (e) {
+      throw Exception('Failed to assign jersey number: ${e.toString()}');
     }
   }
 
@@ -110,21 +149,22 @@ class CaptainService {
   }
 
   Future<Team> updateTeam(
-      String teamId, String name, List<int>? jerseyNumbers) async {
+      String teamId, String name, String? description) async {
     try {
       final response = await http
           .put(
-            Uri.parse('${ApiConstants.baseUrl}${ApiConstants.teams}/$teamId'),
+            Uri.parse(
+                '${ApiConstants.baseUrl}${ApiConstants.captainUpdateTeam}/$teamId'),
             headers: await _getHeaders(),
             body: json.encode({
               'name': name,
-              'jerseyNumbers': jerseyNumbers,
+              'description': description,
             }),
           )
           .timeout(Duration(seconds: AppConstants.requestTimeout));
 
       final data = _handleResponse(response);
-      return Team.fromJson(data);
+      return Team.fromJson(data['team']);
     } catch (e) {
       throw Exception('Failed to update team: ${e.toString()}');
     }
@@ -134,7 +174,7 @@ class CaptainService {
     try {
       final response = await http
           .get(
-            Uri.parse('${ApiConstants.baseUrl}${ApiConstants.matches}'),
+            Uri.parse('${ApiConstants.baseUrl}${ApiConstants.captainMatches}'),
             headers: await _getHeaders(),
           )
           .timeout(Duration(seconds: AppConstants.requestTimeout));
@@ -144,14 +184,5 @@ class CaptainService {
     } catch (e) {
       throw Exception('Failed to fetch captain matches: ${e.toString()}');
     }
-  }
-
-  Future<String?> _getCurrentUserId() async {
-    final userData = await _storageService.getUser();
-    if (userData != null) {
-      final user = json.decode(userData);
-      return user['_id'] ?? user['id'];
-    }
-    return null;
   }
 }
