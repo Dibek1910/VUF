@@ -106,13 +106,6 @@ class DashboardDrawer extends StatelessWidget {
                 Navigator.pop(context);
               },
             ),
-            ListTile(
-              leading: const Icon(Icons.card_membership),
-              title: const Text('Subscription'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
           ] else if (role == 'Player') ...[
             ListTile(
               leading: const Icon(Icons.group),

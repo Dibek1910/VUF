@@ -191,7 +191,8 @@ class AdminService {
     try {
       final response = await http
           .post(
-            Uri.parse('${ApiConstants.baseUrl}${ApiConstants.adminMatches}'),
+            Uri.parse(
+                '${ApiConstants.baseUrl}${ApiConstants.adminCreateMatch}'),
             headers: await _getHeaders(),
             body: json.encode({
               'team1Id': team1Id,

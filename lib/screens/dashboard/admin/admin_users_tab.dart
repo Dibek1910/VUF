@@ -246,21 +246,6 @@ class AdminUsersTab extends StatelessWidget {
                 ),
               ],
             ),
-            if (user['role'] == 'Captain') ...[
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildUserDetailItem('Subscription',
-                        user['subscriptionStatus'] ?? 'Inactive'),
-                  ),
-                  Expanded(
-                    child: _buildUserDetailItem(
-                        'Expires', _formatDate(user['subscriptionExpiryDate'])),
-                  ),
-                ],
-              ),
-            ],
             if (!user['isApproved'] && user['role'] != 'Admin') ...[
               const SizedBox(height: 16),
               Container(

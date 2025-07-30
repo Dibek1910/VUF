@@ -304,10 +304,6 @@ class AdminTeamsTab extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: _buildTeamDetailItem('Subscription',
-                      team['captainId']['subscriptionStatus'] ?? 'Inactive'),
-                ),
-                Expanded(
                   child: _buildTeamDetailItem(
                       'Created', _formatDate(team['createdAt'])),
                 ),
@@ -366,10 +362,10 @@ class AdminTeamsTab extends StatelessWidget {
                   size: 24,
                 ),
                 const SizedBox(width: 12),
-                Expanded(
+                const Expanded(
                   child: Text(
                     'Player Removal Request',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),

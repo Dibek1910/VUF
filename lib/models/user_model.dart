@@ -6,8 +6,6 @@ class User {
   final String role;
   final String uniqueId;
   final bool isApproved;
-  final String? subscriptionStatus;
-  final DateTime? subscriptionExpiryDate;
 
   User({
     required this.id,
@@ -17,8 +15,6 @@ class User {
     required this.role,
     required this.uniqueId,
     required this.isApproved,
-    this.subscriptionStatus,
-    this.subscriptionExpiryDate,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -30,10 +26,6 @@ class User {
       role: json['role'] ?? '',
       uniqueId: json['uniqueId'] ?? '',
       isApproved: json['isApproved'] ?? false,
-      subscriptionStatus: json['subscriptionStatus'],
-      subscriptionExpiryDate: json['subscriptionExpiryDate'] != null
-          ? DateTime.parse(json['subscriptionExpiryDate'])
-          : null,
     );
   }
 
@@ -46,8 +38,6 @@ class User {
       'role': role,
       'uniqueId': uniqueId,
       'isApproved': isApproved,
-      'subscriptionStatus': subscriptionStatus,
-      'subscriptionExpiryDate': subscriptionExpiryDate?.toIso8601String(),
     };
   }
 }

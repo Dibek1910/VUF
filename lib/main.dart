@@ -5,7 +5,7 @@ import 'package:vishv_umiyadham_foundation/providers/theme_provider.dart';
 import 'package:vishv_umiyadham_foundation/providers/player_provider.dart';
 import 'package:vishv_umiyadham_foundation/providers/admin_provider.dart';
 import 'package:vishv_umiyadham_foundation/providers/captain_provider.dart';
-import 'package:vishv_umiyadham_foundation/screens/splash_screen.dart';
+import 'package:vishv_umiyadham_foundation/screens/auth/splash_screen.dart';
 import 'package:vishv_umiyadham_foundation/utils/app_theme.dart';
 
 void main() {

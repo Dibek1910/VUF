@@ -30,8 +30,6 @@ class ApiConstants {
   static const String matches = '/matches';
   static const String updateScore = '/matches/score';
 
-  static const String payments = '/payments';
-
   static const String playerInvitations = '/player/invitations';
   static const String playerAcceptInvitation = '/player/accept-invitation';
   static const String playerDeclineInvitation = '/player/decline-invitation';
@@ -48,6 +46,7 @@ class ApiConstants {
   static const String adminApproveRemoval = '/admin/approve-removal';
   static const String adminRejectRemoval = '/admin/reject-removal';
   static const String adminMatches = '/admin/matches';
+  static const String adminCreateMatch = '/admin/matches';
   static const String adminUpdateScore = '/admin/update-score';
   static const String adminUpdateStatus = '/admin/update-status';
   static const String adminUsers = '/admin/users';

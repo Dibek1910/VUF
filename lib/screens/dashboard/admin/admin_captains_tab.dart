@@ -189,10 +189,6 @@ class AdminCaptainsTab extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: _buildDetailItem('Subscription',
-                      captain['subscriptionStatus'] ?? 'Inactive'),
-                ),
-                Expanded(
                   child: _buildDetailItem(
                       'Registered', _formatDate(captain['createdAt'])),
                 ),
