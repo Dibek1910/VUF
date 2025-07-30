@@ -329,7 +329,8 @@ class AdminTeamsTab extends StatelessWidget {
                           player['name'],
                           style: const TextStyle(fontSize: 12),
                         ),
-                        backgroundColor: Colors.blue.withOpacity(0.1),
+                        backgroundColor:
+                            Colors.blue.withAlpha((0.1 * 255).toInt()),
                       ),
                     )
                     .toList(),
@@ -375,7 +376,7 @@ class AdminTeamsTab extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: Colors.red.withOpacity(0.1),
+                    color: Colors.red.withAlpha(25),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: const Text(

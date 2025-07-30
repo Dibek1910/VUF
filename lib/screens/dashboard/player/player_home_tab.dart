@@ -93,7 +93,7 @@ class PlayerHomeTab extends StatelessWidget {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: AppTheme.primaryColor.withOpacity(0.1),
+                          color: AppTheme.primaryColor.withAlpha(25),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: const Text(
@@ -423,6 +423,8 @@ class PlayerHomeTab extends StatelessWidget {
 
   Widget _buildRecentMatchesSection(
       BuildContext context, PlayerProvider playerProvider) {
+    final recentMatches = playerProvider.dashboardData['recentMatches'] ?? [];
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -444,7 +446,9 @@ class PlayerHomeTab extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 16),
-        if (playerProvider.playerMatches.isEmpty)
+        if (playerProvider.isLoading)
+          const Center(child: CircularProgressIndicator())
+        else if (recentMatches.isEmpty)
           Card(
             elevation: 2,
             shape: RoundedRectangleBorder(
@@ -473,14 +477,12 @@ class PlayerHomeTab extends StatelessWidget {
             ),
           )
         else
-          ...playerProvider.playerMatches
-              .take(3)
-              .map((match) => _buildMatchCard(match)),
+          ...recentMatches.take(3).map((match) => _buildMatchCard(match)),
       ],
     );
   }
 
-  Widget _buildMatchCard(match) {
+  Widget _buildMatchCard(dynamic match) {
     return Card(
       elevation: 2,
       margin: const EdgeInsets.only(bottom: 12),
@@ -495,11 +497,15 @@ class PlayerHomeTab extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'Match',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
+                Text(
+                  match['matchDate'] != null
+                      ? DateTime.parse(match['matchDate'])
+                          .toString()
+                          .split(' ')[0]
+                      : 'TBD',
+                  style: const TextStyle(
+                    color: AppTheme.textLightColor,
+                    fontSize: 12,
                   ),
                 ),
                 Container(
@@ -508,22 +514,14 @@ class PlayerHomeTab extends StatelessWidget {
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: match.status == 'Upcoming'
-                        ? Colors.blue.withOpacity(0.1)
-                        : match.status == 'Live'
-                            ? Colors.green.withOpacity(0.1)
-                            : Colors.grey.withOpacity(0.1),
+                    color: _getMatchStatusColor(match['status']).withAlpha(25),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
-                    match.status,
+                    match['status'],
                     style: TextStyle(
                       fontSize: 12,
-                      color: match.status == 'Upcoming'
-                          ? Colors.blue
-                          : match.status == 'Live'
-                              ? Colors.green
-                              : Colors.grey,
+                      color: _getMatchStatusColor(match['status']),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -541,7 +539,7 @@ class PlayerHomeTab extends StatelessWidget {
                         backgroundColor: Colors.blue,
                         radius: 20,
                         child: Text(
-                          match.teams[0].name[0].toUpperCase(),
+                          (match['teams'][0]['name'] ?? 'T')[0].toUpperCase(),
                           style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -550,19 +548,11 @@ class PlayerHomeTab extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        match.teams[0].name,
+                        match['teams'][0]['name'] ?? 'Team 1',
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      if (match.status != 'Upcoming' && match.scores.isNotEmpty)
-                        Text(
-                          '${match.scores[match.teams[0].id] ?? 0}',
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
                     ],
                   ),
                 ),
@@ -581,8 +571,9 @@ class PlayerHomeTab extends StatelessWidget {
                         backgroundColor: Colors.red,
                         radius: 20,
                         child: Text(
-                          match.teams.length > 1
-                              ? match.teams[1].name[0].toUpperCase()
+                          match['teams'].length > 1
+                              ? (match['teams'][1]['name'] ?? 'T')[0]
+                                  .toUpperCase()
                               : 'T',
                           style: const TextStyle(
                             color: Colors.white,
@@ -592,21 +583,13 @@ class PlayerHomeTab extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        match.teams.length > 1 ? match.teams[1].name : 'TBD',
+                        match['teams'].length > 1
+                            ? match['teams'][1]['name'] ?? 'Team 2'
+                            : 'TBD',
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      if (match.status != 'Upcoming' &&
-                          match.scores.isNotEmpty &&
-                          match.teams.length > 1)
-                        Text(
-                          '${match.scores[match.teams[1].id] ?? 0}',
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
                     ],
                   ),
                 ),
@@ -616,6 +599,21 @@ class PlayerHomeTab extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Color _getMatchStatusColor(String? status) {
+    switch (status) {
+      case 'Live':
+        return Colors.green;
+      case 'Upcoming':
+        return Colors.blue;
+      case 'Completed':
+        return Colors.grey;
+      case 'Cancelled':
+        return Colors.red;
+      default:
+        return Colors.grey;
+    }
   }
 
   Widget _buildInfoItem(String label, String value) {

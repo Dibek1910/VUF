@@ -85,12 +85,13 @@ class _AdminDashboardState extends State<AdminDashboard> {
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () async {
+              final navigator = Navigator.of(context);
               final authProvider =
                   Provider.of<AuthProvider>(context, listen: false);
               await authProvider.logout();
               if (!mounted) return;
 
-              Navigator.of(context).pushReplacement(
+              navigator.pushReplacement(
                 MaterialPageRoute(builder: (_) => const LoginScreen()),
               );
             },

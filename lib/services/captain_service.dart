@@ -43,7 +43,7 @@ class CaptainService {
                 '${ApiConstants.baseUrl}${ApiConstants.captainDashboard}'),
             headers: await _getHeaders(),
           )
-          .timeout(Duration(seconds: AppConstants.requestTimeout));
+          .timeout(const Duration(seconds: AppConstants.requestTimeout));
 
       return _handleResponse(response);
     } catch (e) {
@@ -58,7 +58,7 @@ class CaptainService {
             Uri.parse('${ApiConstants.baseUrl}${ApiConstants.captainTeams}'),
             headers: await _getHeaders(),
           )
-          .timeout(Duration(seconds: AppConstants.requestTimeout));
+          .timeout(const Duration(seconds: AppConstants.requestTimeout));
 
       final data = _handleResponse(response);
       return (data as List).map((team) => Team.fromJson(team)).toList();
@@ -78,7 +78,7 @@ class CaptainService {
               'name': name,
             }),
           )
-          .timeout(Duration(seconds: AppConstants.requestTimeout));
+          .timeout(const Duration(seconds: AppConstants.requestTimeout));
 
       final data = _handleResponse(response);
       return Team.fromJson(data['team']);
@@ -99,7 +99,7 @@ class CaptainService {
               'playerUniqueId': playerUniqueId,
             }),
           )
-          .timeout(Duration(seconds: AppConstants.requestTimeout));
+          .timeout(const Duration(seconds: AppConstants.requestTimeout));
 
       return _handleResponse(response);
     } catch (e) {
@@ -121,7 +121,7 @@ class CaptainService {
               'jerseyNumber': jerseyNumber,
             }),
           )
-          .timeout(Duration(seconds: AppConstants.requestTimeout));
+          .timeout(const Duration(seconds: AppConstants.requestTimeout));
 
       return _handleResponse(response);
     } catch (e) {
@@ -140,7 +140,7 @@ class CaptainService {
               'playerId': playerId,
             }),
           )
-          .timeout(Duration(seconds: AppConstants.requestTimeout));
+          .timeout(const Duration(seconds: AppConstants.requestTimeout));
 
       return _handleResponse(response);
     } catch (e) {
@@ -161,7 +161,7 @@ class CaptainService {
               'description': description,
             }),
           )
-          .timeout(Duration(seconds: AppConstants.requestTimeout));
+          .timeout(const Duration(seconds: AppConstants.requestTimeout));
 
       final data = _handleResponse(response);
       return Team.fromJson(data['team']);
@@ -177,7 +177,7 @@ class CaptainService {
             Uri.parse('${ApiConstants.baseUrl}${ApiConstants.captainMatches}'),
             headers: await _getHeaders(),
           )
-          .timeout(Duration(seconds: AppConstants.requestTimeout));
+          .timeout(const Duration(seconds: AppConstants.requestTimeout));
 
       final data = _handleResponse(response);
       return (data as List).map((match) => Match.fromJson(match)).toList();

@@ -51,9 +51,9 @@ class CaptainMatchesTab extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(32),
         decoration: BoxDecoration(
-          color: Colors.orange.withOpacity(0.1),
+          color: Colors.orange.withAlpha(25),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.orange.withOpacity(0.3)),
+          border: Border.all(color: Colors.orange.withAlpha(77)),
         ),
         child: const Center(
           child: Column(
@@ -178,7 +178,7 @@ class CaptainMatchesTab extends StatelessWidget {
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: _getMatchStatusColor(match.status).withOpacity(0.1),
+                    color: _getMatchStatusColor(match.status).withAlpha(25),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
@@ -232,9 +232,9 @@ class CaptainMatchesTab extends StatelessWidget {
               const SizedBox(height: 16),
               const Divider(),
               const SizedBox(height: 8),
-              Text(
+              const Text(
                 'Description:',
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 14,
                 ),

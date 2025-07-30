@@ -103,7 +103,7 @@ class CaptainHomeTab extends StatelessWidget {
                               vertical: 4,
                             ),
                             decoration: BoxDecoration(
-                              color: AppTheme.primaryColor.withOpacity(0.1),
+                              color: AppTheme.primaryColor.withAlpha(25),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: const Text(
@@ -123,8 +123,8 @@ class CaptainHomeTab extends StatelessWidget {
                             ),
                             decoration: BoxDecoration(
                               color: (captain['isApproved'] ?? false)
-                                  ? Colors.green.withOpacity(0.1)
-                                  : Colors.orange.withOpacity(0.1),
+                                  ? Colors.green.withAlpha(25)
+                                  : Colors.orange.withAlpha(25),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Text(
@@ -172,19 +172,19 @@ class CaptainHomeTab extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.orange.withOpacity(0.1),
+          color: Colors.orange.withAlpha(25),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.orange.withOpacity(0.3)),
+          border: Border.all(color: Colors.orange.withAlpha(77)),
         ),
-        child: Column(
+        child: const Column(
           children: [
-            const Icon(
+            Icon(
               Icons.hourglass_empty,
               size: 48,
               color: Colors.orange,
             ),
-            const SizedBox(height: 16),
-            const Text(
+            SizedBox(height: 16),
+            Text(
               'Approval Pending',
               style: TextStyle(
                 fontSize: 18,
@@ -192,8 +192,8 @@ class CaptainHomeTab extends StatelessWidget {
                 color: Colors.orange,
               ),
             ),
-            const SizedBox(height: 8),
-            const Text(
+            SizedBox(height: 8),
+            Text(
               'Your captain registration is pending admin approval. You will be able to create teams and manage players once approved.',
               style: TextStyle(
                 color: Colors.orange,
@@ -550,8 +550,7 @@ class CaptainHomeTab extends StatelessWidget {
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color:
-                        _getMatchStatusColor(match['status']).withOpacity(0.1),
+                    color: _getMatchStatusColor(match['status']).withAlpha(25),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(

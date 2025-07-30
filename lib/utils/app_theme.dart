@@ -13,16 +13,14 @@ class AppTheme {
 
   static ThemeData lightTheme = ThemeData(
     useMaterial3: true,
-    colorScheme: ColorScheme.light(
+    colorScheme: const ColorScheme.light(
       primary: primaryColor,
       secondary: secondaryColor,
       surface: Colors.white,
-      background: backgroundColor,
       error: errorColor,
       onPrimary: Colors.white,
       onSecondary: Colors.white,
       onSurface: textColor,
-      onBackground: textColor,
       onError: Colors.white,
       brightness: Brightness.light,
     ),
@@ -68,16 +66,14 @@ class AppTheme {
 
   static ThemeData darkTheme = ThemeData(
     useMaterial3: true,
-    colorScheme: ColorScheme.dark(
+    colorScheme: const ColorScheme.dark(
       primary: primaryColor,
       secondary: secondaryColor,
-      surface: const Color(0xFF121212),
-      background: const Color(0xFF121212),
+      surface: Color(0xFF121212),
       error: errorColor,
       onPrimary: Colors.white,
       onSecondary: Colors.white,
       onSurface: Colors.white,
-      onBackground: Colors.white,
       onError: Colors.white,
       brightness: Brightness.dark,
     ),

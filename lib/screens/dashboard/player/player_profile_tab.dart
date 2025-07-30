@@ -57,7 +57,7 @@ class PlayerProfileTab extends StatelessWidget {
               vertical: 6,
             ),
             decoration: BoxDecoration(
-              color: AppTheme.primaryColor.withOpacity(0.1),
+              color: AppTheme.primaryColor.withAlpha(25),
               borderRadius: BorderRadius.circular(16),
             ),
             child: const Text(

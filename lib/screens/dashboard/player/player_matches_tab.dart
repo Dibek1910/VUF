@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vishv_umiyadham_foundation/models/match_model.dart';
 import 'package:vishv_umiyadham_foundation/providers/player_provider.dart';
 import 'package:vishv_umiyadham_foundation/utils/app_theme.dart';
 
@@ -129,7 +130,7 @@ class PlayerMatchesTab extends StatelessWidget {
     }
   }
 
-  Widget _buildMatchCard(match, String status) {
+  Widget _buildMatchCard(Match match, String status) {
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       shape: RoundedRectangleBorder(
@@ -157,7 +158,7 @@ class PlayerMatchesTab extends StatelessWidget {
     );
   }
 
-  Widget _buildMatchHeader(match, String status) {
+  Widget _buildMatchHeader(Match match, String status) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -174,7 +175,7 @@ class PlayerMatchesTab extends StatelessWidget {
             vertical: 4,
           ),
           decoration: BoxDecoration(
-            color: _getStatusColor(status).withOpacity(0.1),
+            color: _getStatusColor(status).withAlpha(25),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Text(
@@ -203,7 +204,7 @@ class PlayerMatchesTab extends StatelessWidget {
     }
   }
 
-  Widget _buildMatchTeams(match, String status) {
+  Widget _buildMatchTeams(Match match, String status) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -276,7 +277,7 @@ class PlayerMatchesTab extends StatelessWidget {
     );
   }
 
-  Widget _buildMatchDetails(match) {
+  Widget _buildMatchDetails(Match match) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -296,15 +297,15 @@ class PlayerMatchesTab extends StatelessWidget {
             ),
           ],
         ),
-        Row(
+        const Row(
           children: [
-            const Icon(
+            Icon(
               Icons.access_time,
               size: 16,
               color: AppTheme.textLightColor,
             ),
-            const SizedBox(width: 4),
-            const Text(
+            SizedBox(width: 4),
+            Text(
               'Time: TBD',
               style: TextStyle(
                 color: AppTheme.textLightColor,
@@ -320,9 +321,9 @@ class PlayerMatchesTab extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.green.withOpacity(0.1),
+        color: Colors.green.withAlpha(25),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.green.withOpacity(0.3)),
+        border: Border.all(color: Colors.green.withAlpha(77)),
       ),
       child: Row(
         children: [

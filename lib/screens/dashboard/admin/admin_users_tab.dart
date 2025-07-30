@@ -183,7 +183,7 @@ class AdminUsersTab extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: _getRoleColor(user['role']).withOpacity(0.1),
+                        color: _getRoleColor(user['role']).withAlpha(25),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
@@ -251,9 +251,9 @@ class AdminUsersTab extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.orange.withOpacity(0.1),
+                  color: Colors.orange.withAlpha(25),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.orange.withOpacity(0.3)),
+                  border: Border.all(color: Colors.orange.withAlpha(77)),
                 ),
                 child: const Row(
                   children: [

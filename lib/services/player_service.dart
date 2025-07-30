@@ -43,7 +43,7 @@ class PlayerService {
                 '${ApiConstants.baseUrl}${ApiConstants.playerInvitations}'),
             headers: await _getHeaders(),
           )
-          .timeout(Duration(seconds: AppConstants.requestTimeout));
+          .timeout(const Duration(seconds: AppConstants.requestTimeout));
 
       return _handleResponse(response);
     } catch (e) {
@@ -62,7 +62,7 @@ class PlayerService {
               'teamId': teamId,
             }),
           )
-          .timeout(Duration(seconds: AppConstants.requestTimeout));
+          .timeout(const Duration(seconds: AppConstants.requestTimeout));
 
       return _handleResponse(response);
     } catch (e) {
@@ -81,7 +81,7 @@ class PlayerService {
               'teamId': teamId,
             }),
           )
-          .timeout(Duration(seconds: AppConstants.requestTimeout));
+          .timeout(const Duration(seconds: AppConstants.requestTimeout));
 
       return _handleResponse(response);
     } catch (e) {
@@ -96,7 +96,7 @@ class PlayerService {
             Uri.parse('${ApiConstants.baseUrl}${ApiConstants.playerTeam}'),
             headers: await _getHeaders(),
           )
-          .timeout(Duration(seconds: AppConstants.requestTimeout));
+          .timeout(const Duration(seconds: AppConstants.requestTimeout));
 
       final data = _handleResponse(response);
       return Team.fromJson(data);
@@ -115,7 +115,7 @@ class PlayerService {
             Uri.parse('${ApiConstants.baseUrl}${ApiConstants.playerMatches}'),
             headers: await _getHeaders(),
           )
-          .timeout(Duration(seconds: AppConstants.requestTimeout));
+          .timeout(const Duration(seconds: AppConstants.requestTimeout));
 
       final data = _handleResponse(response);
       return (data as List).map((match) => Match.fromJson(match)).toList();
@@ -131,7 +131,7 @@ class PlayerService {
             Uri.parse('${ApiConstants.baseUrl}${ApiConstants.playerDashboard}'),
             headers: await _getHeaders(),
           )
-          .timeout(Duration(seconds: AppConstants.requestTimeout));
+          .timeout(const Duration(seconds: AppConstants.requestTimeout));
 
       return _handleResponse(response);
     } catch (e) {

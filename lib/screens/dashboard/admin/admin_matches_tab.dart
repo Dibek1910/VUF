@@ -21,10 +21,10 @@ class AdminMatchesTab extends StatelessWidget {
           children: [
             Row(
               children: [
-                Expanded(
+                const Expanded(
                   child: Text(
                     'Match Management',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
@@ -161,7 +161,7 @@ class AdminMatchesTab extends StatelessWidget {
                           horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
                         color: _getMatchStatusColor(match['status'])
-                            .withOpacity(0.1),
+                            .withAlpha((0.1 * 255).toInt()),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(

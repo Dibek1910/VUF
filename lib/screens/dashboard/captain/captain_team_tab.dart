@@ -49,9 +49,9 @@ class CaptainTeamTab extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(32),
         decoration: BoxDecoration(
-          color: Colors.orange.withOpacity(0.1),
+          color: Colors.orange.withAlpha(25),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.orange.withOpacity(0.3)),
+          border: Border.all(color: Colors.orange.withAlpha(77)),
         ),
         child: const Center(
           child: Column(
@@ -379,7 +379,7 @@ class CaptainTeamTab extends StatelessWidget {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: AppTheme.primaryColor.withOpacity(0.1),
+                          color: AppTheme.primaryColor.withAlpha(25),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: const Text(

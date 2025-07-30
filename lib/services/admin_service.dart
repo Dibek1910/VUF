@@ -40,7 +40,7 @@ class AdminService {
             Uri.parse('${ApiConstants.baseUrl}${ApiConstants.adminDashboard}'),
             headers: await _getHeaders(),
           )
-          .timeout(Duration(seconds: AppConstants.requestTimeout));
+          .timeout(const Duration(seconds: AppConstants.requestTimeout));
 
       return _handleResponse(response);
     } catch (e) {
@@ -56,7 +56,7 @@ class AdminService {
                 '${ApiConstants.baseUrl}${ApiConstants.adminPendingCaptains}'),
             headers: await _getHeaders(),
           )
-          .timeout(Duration(seconds: AppConstants.requestTimeout));
+          .timeout(const Duration(seconds: AppConstants.requestTimeout));
 
       return _handleResponse(response);
     } catch (e) {
@@ -75,7 +75,7 @@ class AdminService {
               'captainId': captainId,
             }),
           )
-          .timeout(Duration(seconds: AppConstants.requestTimeout));
+          .timeout(const Duration(seconds: AppConstants.requestTimeout));
 
       return _handleResponse(response);
     } catch (e) {
@@ -94,7 +94,7 @@ class AdminService {
               'captainId': captainId,
             }),
           )
-          .timeout(Duration(seconds: AppConstants.requestTimeout));
+          .timeout(const Duration(seconds: AppConstants.requestTimeout));
 
       return _handleResponse(response);
     } catch (e) {
@@ -109,7 +109,7 @@ class AdminService {
             Uri.parse('${ApiConstants.baseUrl}${ApiConstants.adminTeams}'),
             headers: await _getHeaders(),
           )
-          .timeout(Duration(seconds: AppConstants.requestTimeout));
+          .timeout(const Duration(seconds: AppConstants.requestTimeout));
 
       return _handleResponse(response);
     } catch (e) {
@@ -125,7 +125,7 @@ class AdminService {
                 '${ApiConstants.baseUrl}${ApiConstants.adminPendingRemovals}'),
             headers: await _getHeaders(),
           )
-          .timeout(Duration(seconds: AppConstants.requestTimeout));
+          .timeout(const Duration(seconds: AppConstants.requestTimeout));
 
       return _handleResponse(response);
     } catch (e) {
@@ -144,7 +144,7 @@ class AdminService {
               'teamId': teamId,
             }),
           )
-          .timeout(Duration(seconds: AppConstants.requestTimeout));
+          .timeout(const Duration(seconds: AppConstants.requestTimeout));
 
       return _handleResponse(response);
     } catch (e) {
@@ -163,7 +163,7 @@ class AdminService {
               'teamId': teamId,
             }),
           )
-          .timeout(Duration(seconds: AppConstants.requestTimeout));
+          .timeout(const Duration(seconds: AppConstants.requestTimeout));
 
       return _handleResponse(response);
     } catch (e) {
@@ -178,7 +178,7 @@ class AdminService {
             Uri.parse('${ApiConstants.baseUrl}${ApiConstants.adminMatches}'),
             headers: await _getHeaders(),
           )
-          .timeout(Duration(seconds: AppConstants.requestTimeout));
+          .timeout(const Duration(seconds: AppConstants.requestTimeout));
 
       return _handleResponse(response);
     } catch (e) {
@@ -202,7 +202,7 @@ class AdminService {
               'description': description,
             }),
           )
-          .timeout(Duration(seconds: AppConstants.requestTimeout));
+          .timeout(const Duration(seconds: AppConstants.requestTimeout));
 
       return _handleResponse(response);
     } catch (e) {
@@ -224,7 +224,7 @@ class AdminService {
               'score': score,
             }),
           )
-          .timeout(Duration(seconds: AppConstants.requestTimeout));
+          .timeout(const Duration(seconds: AppConstants.requestTimeout));
 
       return _handleResponse(response);
     } catch (e) {
@@ -244,7 +244,7 @@ class AdminService {
               'status': status,
             }),
           )
-          .timeout(Duration(seconds: AppConstants.requestTimeout));
+          .timeout(const Duration(seconds: AppConstants.requestTimeout));
 
       return _handleResponse(response);
     } catch (e) {
@@ -259,7 +259,7 @@ class AdminService {
             Uri.parse('${ApiConstants.baseUrl}${ApiConstants.adminUsers}'),
             headers: await _getHeaders(),
           )
-          .timeout(Duration(seconds: AppConstants.requestTimeout));
+          .timeout(const Duration(seconds: AppConstants.requestTimeout));
 
       return _handleResponse(response);
     } catch (e) {
@@ -275,7 +275,7 @@ class AdminService {
                 '${ApiConstants.baseUrl}${ApiConstants.adminUsers}/$userId'),
             headers: await _getHeaders(),
           )
-          .timeout(Duration(seconds: AppConstants.requestTimeout));
+          .timeout(const Duration(seconds: AppConstants.requestTimeout));
 
       return _handleResponse(response);
     } catch (e) {
@@ -291,7 +291,7 @@ class AdminService {
                 '${ApiConstants.baseUrl}${ApiConstants.adminTeams}/$teamId'),
             headers: await _getHeaders(),
           )
-          .timeout(Duration(seconds: AppConstants.requestTimeout));
+          .timeout(const Duration(seconds: AppConstants.requestTimeout));
 
       return _handleResponse(response);
     } catch (e) {

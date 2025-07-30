@@ -260,8 +260,8 @@ class AdminDashboardTab extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
               color: user['isApproved']
-                  ? Colors.green.withOpacity(0.1)
-                  : Colors.orange.withOpacity(0.1),
+                  ? Colors.green.withAlpha((0.1 * 255).toInt())
+                  : Colors.orange.withAlpha((0.1 * 255).toInt()),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Text(
@@ -314,7 +314,8 @@ class AdminDashboardTab extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: _getMatchStatusColor(match['status']).withOpacity(0.1),
+              color: _getMatchStatusColor(match['status'])
+                  .withAlpha((0.1 * 255).toInt()),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Text(

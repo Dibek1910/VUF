@@ -51,7 +51,7 @@ class ApiService {
               'role': role,
             }),
           )
-          .timeout(Duration(seconds: AppConstants.requestTimeout));
+          .timeout(const Duration(seconds: AppConstants.requestTimeout));
 
       final data = _handleResponse(response);
       await _storageService.saveToken(data['token']);
@@ -73,7 +73,7 @@ class ApiService {
               'password': password,
             }),
           )
-          .timeout(Duration(seconds: AppConstants.requestTimeout));
+          .timeout(const Duration(seconds: AppConstants.requestTimeout));
 
       final data = _handleResponse(response);
       await _storageService.saveToken(data['token']);
@@ -91,9 +91,7 @@ class ApiService {
             Uri.parse('${ApiConstants.baseUrl}${ApiConstants.logout}'),
             headers: await _getHeaders(),
           )
-          .timeout(Duration(seconds: AppConstants.requestTimeout));
-    } catch (e) {
-      print('Logout API error: $e');
+          .timeout(const Duration(seconds: AppConstants.requestTimeout));
     } finally {
       await _storageService.clearAll();
     }
@@ -106,7 +104,7 @@ class ApiService {
             Uri.parse('${ApiConstants.baseUrl}${ApiConstants.userProfile}'),
             headers: await _getHeaders(),
           )
-          .timeout(Duration(seconds: AppConstants.requestTimeout));
+          .timeout(const Duration(seconds: AppConstants.requestTimeout));
 
       final data = _handleResponse(response);
       return User.fromJson(data);

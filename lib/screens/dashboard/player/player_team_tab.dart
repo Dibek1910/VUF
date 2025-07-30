@@ -118,9 +118,9 @@ class PlayerTeamTab extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 4),
-                      Text(
+                      const Text(
                         'Joined team',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
                           color: AppTheme.textLightColor,
                         ),
@@ -227,7 +227,7 @@ class PlayerTeamTab extends StatelessWidget {
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
-                        color: AppTheme.primaryColor.withOpacity(0.1),
+                        color: AppTheme.primaryColor.withAlpha(25),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: const Text(

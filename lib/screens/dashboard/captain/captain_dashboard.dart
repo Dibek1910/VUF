@@ -76,12 +76,13 @@ class _CaptainDashboardState extends State<CaptainDashboard> {
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () async {
+              final navigator = Navigator.of(context);
               final authProvider =
                   Provider.of<AuthProvider>(context, listen: false);
               await authProvider.logout();
               if (!mounted) return;
 
-              Navigator.of(context).pushReplacement(
+              navigator.pushReplacement(
                 MaterialPageRoute(builder: (_) => const LoginScreen()),
               );
             },

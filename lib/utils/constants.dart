@@ -70,9 +70,9 @@ class AppConstants {
   static const int requestTimeout = 30;
 }
 
-enum UserRole { Admin, Captain, Player }
+enum UserRole { admin, captain, player }
 
-enum MatchStatus { Upcoming, Live, Completed, Cancelled }
+enum MatchStatus { upcoming, live, completed, cancelled }
 
 class ErrorMessages {
   static const String networkError =
